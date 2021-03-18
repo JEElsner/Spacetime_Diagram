@@ -78,11 +78,19 @@ public class Diagram extends Canvas {
 
         int color = 0;
         for (SpacetimeObject obj : objects) {
+            g2d.setColor(lineColors[(color++ % lineColors.length)]);
+
             if (obj instanceof SpacetimeTraveller) {
                 SpacetimeTraveller traveller = (SpacetimeTraveller) obj;
 
-                g2d.setColor(lineColors[(color++ % lineColors.length)]);
                 drawWorldLine(g2d, (int) Math.round(traveller.getXIntercept()), traveller.getBeta());
+            } else {
+                int radius = 5;
+
+                int x = (int) Math.round(obj.getX(referenceFrameBeta));
+                int t = (int) Math.round(obj.getT(referenceFrameBeta));
+
+                g2d.fillOval(x - radius, t - radius, radius * 2, radius * 2);
             }
         }
     }

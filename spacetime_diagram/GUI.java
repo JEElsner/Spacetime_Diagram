@@ -124,7 +124,7 @@ public class GUI extends JFrame {
         ArrayList<SpacetimeObject> travellers = new ArrayList<>();
         travellers.add(new SpacetimeTraveller("foo", 0.1, 0, 0));
         travellers.add(new SpacetimeTraveller("bar", -0.6, 0, 50));
-        travellers.add(new SpacetimeTraveller("baz", 0.4, 50, -50));
+        travellers.add(new SpacetimeObject("baz", 50, -50));
 
         graphPnl.add(new Diagram(travellers));
 
