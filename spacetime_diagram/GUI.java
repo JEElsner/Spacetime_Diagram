@@ -138,19 +138,6 @@ public class GUI extends JFrame {
         new GUI();
     }
 
-    private class Graph extends java.awt.Canvas {
-
-        /**
-         *
-         */
-        private static final long serialVersionUID = 6242925692009421612L;
-
-        public Graph() {
-            this.setMinimumSize(new Dimension(500, 500));
-            this.setPreferredSize(new Dimension(500, 500));
-        }
-    }
-
     private class ReferenceFrameDataModel implements ComboBoxModel<String> {
         private String selectedItem;
 
