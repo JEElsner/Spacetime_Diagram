@@ -1,2 +1,2 @@
-# Spacetime_Diagram
+# Spacetime Diagram
 Interactive spacetime diagram to help understand special relativity.
