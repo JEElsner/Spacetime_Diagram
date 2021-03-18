@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,10 +74,22 @@ public class GUI extends JFrame {
         globalOptions.add(shiftViewerCheckBox);
 
         JSlider observerSpeed = new JSlider(-100, 100, 0);
+        observerSpeed.setMajorTickSpacing(20);
+        observerSpeed.setMinorTickSpacing(10);
+        observerSpeed.setPaintTicks(true);
+        observerSpeed.setPaintLabels(true);
+        observerSpeed.setSnapToTicks(true);
         observerSpeed.addChangeListener(e -> {
             graph.setReferenceFrameBeta(((JSlider) e.getSource()).getValue() / 100.0);
             graph.repaint();
         });
+
+        Hashtable<Integer, JLabel> labelTable = new Hashtable<>();
+        for (int i = -100; i <= 100; i += 20) {
+            labelTable.put(i, new JLabel("" + (i / 100.0)));
+        }
+        observerSpeed.setLabelTable(labelTable);
+
         globalOptions.add(observerSpeed);
 
         optionsPanel.add(globalOptions);
