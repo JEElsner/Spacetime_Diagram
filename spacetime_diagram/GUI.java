@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.event.ListDataListener;
 
@@ -33,20 +34,26 @@ public class GUI extends JFrame {
 
     public HashMap<String, double[]> referenceFrames;
 
+    private Diagram graph;
+
     public GUI() {
         super("Spacetime Diagram");
 
         referenceFrames = new HashMap<>();
         referenceFrames.put("Rest Frame", new double[] { 0, 0 });
 
+        // Set how the GUI closes
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        // Create the sidebar panel
         JPanel optionsPanel = new JPanel();
         JPanel globalOptions = new JPanel();
         JPanel itemEditor = new JPanel();
 
+        // Create the sidebar
         optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.PAGE_AXIS));
 
+        // Configure top panel in sidebar
         globalOptions.setBorder(BorderFactory.createTitledBorder("Options"));
         globalOptions.setLayout(new BoxLayout(globalOptions, BoxLayout.PAGE_AXIS));
 
@@ -63,17 +70,25 @@ public class GUI extends JFrame {
         approxCRadio.setSelected(true);
 
         JCheckBox shiftViewerCheckBox = new JCheckBox("Shift Current Reference Frame world line to origin");
-
         globalOptions.add(shiftViewerCheckBox);
+
+        JSlider observerSpeed = new JSlider(-100, 100, 0);
+        observerSpeed.addChangeListener(e -> {
+            graph.setReferenceFrameBeta(((JSlider) e.getSource()).getValue() / 100.0);
+            graph.repaint();
+        });
+        globalOptions.add(observerSpeed);
 
         optionsPanel.add(globalOptions);
 
+        // Configure reference frame drop-down menu
         ReferenceFrameDataModel frameChooserModel = new ReferenceFrameDataModel();
         JComboBox<String> refrenceFrameChooser = new JComboBox<String>(new ReferenceFrameDataModel());
         refrenceFrameChooser.setSelectedItem("Rest Frame");
         refrenceFrameChooser.setEditable(true);
         optionsPanel.add(refrenceFrameChooser);
 
+        // Configure editor for each reference frame
         itemEditor.setBorder(BorderFactory.createTitledBorder("Reference Frame Information"));
 
         itemEditor.setLayout(new GridBagLayout());
@@ -117,6 +132,8 @@ public class GUI extends JFrame {
 
         this.add(optionsPanel, BorderLayout.LINE_START);
 
+        // Spacetime graph & panel
+
         JPanel graphPnl = new JPanel();
         graphPnl.setBorder(BorderFactory.createTitledBorder("Graph"));
 
@@ -126,9 +143,13 @@ public class GUI extends JFrame {
         travellers.add(new SpacetimeTraveller("bar", -0.6, 0, 50));
         travellers.add(new SpacetimeObject("baz", 50, -50));
 
-        graphPnl.add(new Diagram(travellers));
+        graph = new Diagram(travellers);
+
+        graphPnl.add(graph);
 
         this.add(graphPnl, BorderLayout.LINE_END);
+
+        // Auto-size gui & show it
 
         this.pack();
         this.setVisible(true);
