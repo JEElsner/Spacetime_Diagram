@@ -90,5 +90,10 @@ public class LorentzTransform {
             if (Math.abs(beta) < 1)
                 this.beta = beta;
         }
+
+        public double getXIntercept() {
+            // Solve for the x-intercept
+            return (this.getX() / beta - this.getT()) * beta;
+        }
     }
 }

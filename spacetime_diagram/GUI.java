@@ -23,6 +23,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.event.ListDataListener;
 
+import spacetime_diagram.LorentzTransform.*;
+
 public class GUI extends JFrame {
     /**
      *
@@ -118,7 +120,13 @@ public class GUI extends JFrame {
         JPanel graphPnl = new JPanel();
         graphPnl.setBorder(BorderFactory.createTitledBorder("Graph"));
 
-        graphPnl.add(new Diagram());
+        // Spacetime travellers
+        ArrayList<SpacetimeObject> travellers = new ArrayList<>();
+        travellers.add(new SpacetimeTraveller("foo", 0.1, 0, 0));
+        travellers.add(new SpacetimeTraveller("bar", -0.6, 0, 50));
+        travellers.add(new SpacetimeTraveller("baz", 0.4, 50, -50));
+
+        graphPnl.add(new Diagram(travellers));
 
         this.add(graphPnl, BorderLayout.LINE_END);
 

@@ -3,6 +3,10 @@ package spacetime_diagram;
 import java.awt.Canvas;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+
+import spacetime_diagram.LorentzTransform.SpacetimeObject;
+import spacetime_diagram.LorentzTransform.SpacetimeTraveller;
+
 import java.awt.*;
 
 public class Diagram extends Canvas {
@@ -28,10 +32,18 @@ public class Diagram extends Canvas {
     // How the lines are painted
     private Stroke lineStroke = new BasicStroke(3);
 
+    // Worldline colors
+    private Color[] lineColors = new Color[] { Color.red, Color.blue, Color.green };
+
     // How fast the reference frame for the graph is moving
     private double referenceFrameBeta = 0.0;
 
-    public Diagram() {
+    // The list of objects to draw on the graph
+    private Iterable<SpacetimeObject> objects;
+
+    public Diagram(Iterable<SpacetimeObject> objects) {
+        this.objects = objects;
+
         this.setMinimumSize(new Dimension(canvasWidth, canvasHeight));
         this.setPreferredSize(new Dimension(canvasWidth, canvasHeight));
 
@@ -64,8 +76,15 @@ public class Diagram extends Canvas {
         drawWorldLine(g2d, 0, -1);
         drawWorldLine(g2d, 0, 1);
 
-        g.setColor(Color.blue);
-        drawWorldLine(g2d, 50, -0.6);
+        int color = 0;
+        for (SpacetimeObject obj : objects) {
+            if (obj instanceof SpacetimeTraveller) {
+                SpacetimeTraveller traveller = (SpacetimeTraveller) obj;
+
+                g2d.setColor(lineColors[(color++ % lineColors.length)]);
+                drawWorldLine(g2d, (int) Math.round(traveller.getXIntercept()), traveller.getBeta());
+            }
+        }
     }
 
     public void drawWorldLine(Graphics2D g2d, int startX, double beta) {
