@@ -174,6 +174,12 @@ public class GUI extends JFrame {
         JLabel nameLabel = new JLabel("Name");
         JTextField nameField = new JTextField(10);
 
+        nameField.setEnabled(false);
+        nameField.addActionListener(e -> {
+            objectList.getSelectedValue().setName(nameField.getText());
+            objects.fireChangeEvent(objectList.getSelectedIndex());
+        });
+
         nameLabel.setLabelFor(nameField);
         objSettingsPnl.add(nameLabel, objSettingsGbc);
         objSettingsGbc.gridx++;
@@ -188,6 +194,8 @@ public class GUI extends JFrame {
         JLabel xLabel = new JLabel("x-Position");
         JTextField xField = new JTextField(20);
 
+        xField.setEnabled(false);
+
         xLabel.setLabelFor(xField);
         objSettingsPnl.add(xLabel, objSettingsGbc);
         objSettingsGbc.gridx++;
@@ -199,6 +207,8 @@ public class GUI extends JFrame {
         JLabel tLabel = new JLabel("Time");
         JTextField tField = new JTextField(20);
 
+        tField.setEnabled(false);
+
         xLabel.setLabelFor(tField);
         objSettingsPnl.add(tLabel, objSettingsGbc);
         objSettingsGbc.gridx++;
@@ -209,6 +219,8 @@ public class GUI extends JFrame {
 
         JLabel betaLabel = new JLabel("Beta");
         JTextField betaField = new JTextField(20);
+
+        betaField.setEnabled(false);
 
         xLabel.setLabelFor(betaField);
         objSettingsPnl.add(betaLabel, objSettingsGbc);
@@ -224,6 +236,20 @@ public class GUI extends JFrame {
 
         objectList.addListSelectionListener(e -> {
             SpacetimeObject object = objectList.getSelectedValue();
+
+            if (object == null) {
+                nameField.setEnabled(false);
+                xField.setEnabled(false);
+                tField.setEnabled(false);
+                betaField.setEnabled(false);
+
+                return;
+            } else {
+                nameField.setEnabled(true);
+                xField.setEnabled(true);
+                tField.setEnabled(true);
+                betaField.setEnabled(true);
+            }
 
             nameField.setText(object.getName());
 

@@ -2,6 +2,7 @@ package spacetime_diagram;
 
 import java.util.AbstractSequentialList;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.ListModel;
@@ -77,6 +78,16 @@ class SpacetimeObjectListModel extends AbstractSequentialList<SpacetimeObject> i
         }
 
         return o;
+    }
+
+    public void fireChangeEvent(SpacetimeObject object) {
+        int i = objects.indexOf(object);
+        fireChangeEvent(i);
+    }
+
+    public void fireChangeEvent(int index) {
+        ListDataEvent e = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, index, index);
+        listeners.forEach(l -> l.contentsChanged(e));
     }
 
     @Override
