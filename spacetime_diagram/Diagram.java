@@ -33,7 +33,7 @@ import java.awt.*;
  * as is standard practice for spacetime diagrams.
  * 
  * @author Jonathan Elsner
- * @see GUI
+ * @see SpacetimeDiagramGUI
  * @see LorentzTransform
  */
 public class Diagram extends Canvas implements ComponentListener {

@@ -36,7 +36,7 @@ import javax.swing.event.ListDataListener;
  * 
  * @author Jonathan Elsner
  * @see SpacetimeEvent
- * @see GUI
+ * @see SpacetimeDiagramGUI
  * @see Diagram
  * @see ListDataEvent
  */
@@ -194,7 +194,7 @@ class SpacetimeEventListModel extends AbstractSequentialList<SpacetimeEvent> imp
      * @throws IllegalArgumentException if the specified object is not in this list
      * 
      * @see javax.swing.JList
-     * @see GUI
+     * @see SpacetimeDiagramGUI
      */
     public void fireChangeEvent(SpacetimeEvent object) {
         if (!objects.contains(object)) {
@@ -214,7 +214,7 @@ class SpacetimeEventListModel extends AbstractSequentialList<SpacetimeEvent> imp
      * @throws IndexOutOfBoundsException if the index is out of range
      * 
      * @see javax.swing.JList
-     * @see GUI
+     * @see SpacetimeDiagramGUI
      */
     public void fireChangeEvent(int index) {
         if (index < 0 || size() <= index) {
