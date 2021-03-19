@@ -5,6 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.io.File;
 import java.util.HashMap;
@@ -146,6 +147,7 @@ public class GUI extends JFrame {
 
         masterGBC.anchor = GridBagConstraints.PAGE_START;
         masterGBC.fill = GridBagConstraints.HORIZONTAL;
+        masterGBC.weightx = 0.1;
         this.add(globalOptions, masterGBC);
         masterGBC.gridy++;
 
@@ -212,7 +214,7 @@ public class GUI extends JFrame {
 
         masterGBC.anchor = GridBagConstraints.CENTER;
         masterGBC.fill = GridBagConstraints.BOTH;
-        masterGBC.weightx = masterGBC.weighty = 1;
+        masterGBC.weightx = masterGBC.weighty = 0.1;
         this.add(objectListPanel, masterGBC);
         masterGBC.weighty = 0;
         masterGBC.gridy++;
@@ -379,7 +381,7 @@ public class GUI extends JFrame {
 
         masterGBC.anchor = GridBagConstraints.PAGE_END;
         masterGBC.fill = GridBagConstraints.HORIZONTAL;
-        masterGBC.weightx = 1;
+        masterGBC.weightx = 0.1;
         this.add(objSettingsPnl, masterGBC);
         masterGBC.gridy = 0;
         masterGBC.gridx++;
@@ -426,6 +428,7 @@ public class GUI extends JFrame {
         this.pack();
         this.setVisible(true);
 
+        // Set minimum size so components don't get crushed
         this.setMinimumSize(this.getSize());
     }
 
