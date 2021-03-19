@@ -5,16 +5,12 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.CardLayout;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -108,8 +104,8 @@ public class GUI extends JFrame {
         optionsPanel.add(globalOptions);
 
         // Configure reference frame drop-down menu
-        ReferenceFrameDataModel frameChooserModel = new ReferenceFrameDataModel();
-        JComboBox<String> refrenceFrameChooser = new JComboBox<String>(new ReferenceFrameDataModel());
+        ReferenceFrameDataModel frameChooserModel = new ReferenceFrameDataModel(this);
+        JComboBox<String> refrenceFrameChooser = new JComboBox<String>(new ReferenceFrameDataModel(this));
         refrenceFrameChooser.setSelectedItem("Rest Frame");
         refrenceFrameChooser.setEditable(true);
         optionsPanel.add(refrenceFrameChooser);
@@ -234,47 +230,5 @@ public class GUI extends JFrame {
 
     public static void main(String[] args) {
         new GUI();
-    }
-
-    private class ReferenceFrameDataModel implements ComboBoxModel<String> {
-        private String selectedItem;
-
-        private List<ListDataListener> dataListeners = new ArrayList<>();
-
-        @Override
-        public int getSize() {
-            return referenceFrames.size();
-        }
-
-        @Override
-        public String getElementAt(int index) {
-            return referenceFrames.keySet().parallelStream().collect(Collectors.toList()).get(index);
-        }
-
-        @Override
-        public void addListDataListener(ListDataListener l) {
-            dataListeners.add(l);
-        }
-
-        @Override
-        public void removeListDataListener(ListDataListener l) {
-            dataListeners.add(l);
-        }
-
-        @Override
-        public void setSelectedItem(Object anItem) {
-            if (!(anItem instanceof String)) {
-                throw new IllegalArgumentException("Selected item must be a string");
-            } else if (!referenceFrames.containsKey(anItem)) {
-                referenceFrames.put((String) anItem, new double[] { 0, 0 });
-            }
-
-            selectedItem = (String) anItem;
-        }
-
-        @Override
-        public Object getSelectedItem() {
-            return selectedItem;
-        }
     }
 }
