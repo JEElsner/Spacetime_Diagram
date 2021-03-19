@@ -1,10 +1,8 @@
 package spacetime_diagram;
 
-import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.CardLayout;
 import java.util.HashMap;
 import java.util.Hashtable;
 
@@ -56,12 +54,12 @@ public class GUI extends JFrame {
         // Set how the GUI closes
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Create the sidebar panel
-        JPanel optionsPanel = new JPanel();
-        JPanel globalOptions = new JPanel();
+        // Initialize master GUI layout management
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints masterGBC = new GridBagConstraints();
+        masterGBC.gridx = masterGBC.gridy = 0;
 
-        // Create the sidebar
-        optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.PAGE_AXIS));
+        JPanel globalOptions = new JPanel();
 
         // Configure top panel in sidebar
         globalOptions.setBorder(BorderFactory.createTitledBorder("Options"));
@@ -101,7 +99,10 @@ public class GUI extends JFrame {
 
         globalOptions.add(observerSpeed);
 
-        optionsPanel.add(globalOptions);
+        masterGBC.anchor = GridBagConstraints.PAGE_START;
+        masterGBC.fill = GridBagConstraints.HORIZONTAL;
+        this.add(globalOptions, masterGBC);
+        masterGBC.gridy++;
 
         // Configure reference frame drop-down menu
         ReferenceFrameDataModel frameChooserModel = new ReferenceFrameDataModel(this);
@@ -164,7 +165,12 @@ public class GUI extends JFrame {
 
         objectListPanel.add(removeBtn, listPnlGbc);
 
-        optionsPanel.add(objectListPanel);
+        masterGBC.anchor = GridBagConstraints.CENTER;
+        masterGBC.fill = GridBagConstraints.VERTICAL;
+        masterGBC.weighty = 1;
+        this.add(objectListPanel, masterGBC);
+        masterGBC.weighty = 0;
+        masterGBC.gridy++;
 
         JPanel objSettingsPnl = new JPanel();
         objSettingsPnl.setBorder(BorderFactory.createTitledBorder("Selected Event/Traveller"));
@@ -324,15 +330,16 @@ public class GUI extends JFrame {
             }
         });
 
-        optionsPanel.add(objSettingsPnl);
-
-        // Add sidebar to window
-        this.add(optionsPanel, BorderLayout.LINE_START);
+        masterGBC.anchor = GridBagConstraints.PAGE_END;
+        this.add(objSettingsPnl, masterGBC);
+        masterGBC.gridy = 0;
+        masterGBC.gridx++;
 
         // Spacetime graph & panel
 
         JPanel graphPnl = new JPanel();
         graphPnl.setBorder(BorderFactory.createTitledBorder("Graph"));
+        graphPnl.setLayout(new GridBagLayout());
 
         graph = new Diagram(objects);
         objects.addListDataListener(new ListDataListener() {
@@ -354,14 +361,23 @@ public class GUI extends JFrame {
 
         });
 
-        graphPnl.add(graph);
+        GridBagConstraints graphGBC = new GridBagConstraints();
+        graphGBC.fill = GridBagConstraints.BOTH;
+        graphGBC.weightx = graphGBC.weighty = 1;
+        graphPnl.add(graph, graphGBC);
 
-        this.add(graphPnl, BorderLayout.LINE_END);
+        masterGBC.anchor = GridBagConstraints.CENTER;
+        masterGBC.fill = GridBagConstraints.BOTH;
+        masterGBC.weightx = masterGBC.weighty = 1;
+        masterGBC.gridheight = GridBagConstraints.REMAINDER;
+        this.add(graphPnl, masterGBC);
 
         // Auto-size gui & show it
 
         this.pack();
         this.setVisible(true);
+
+        this.setMinimumSize(this.getSize());
     }
 
     public static void main(String[] args) {
