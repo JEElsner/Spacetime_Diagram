@@ -2,31 +2,62 @@ package spacetime_diagram;
 
 import java.util.UUID;
 
+/**
+ * Compute Lorentz Transformations for special relativity
+ * 
+ * @author Jonathan Elsner
+ */
 public class LorentzTransform {
-    private double c = 3 * 10 ^ 8;
 
-    public double getC() {
+    private static final double C_1 = 1;
+    private static final double EXACT_C = 299_792_458;
+    private static final double APPROXIMATE_C = 3 * 10 ^ 8;
+
+    private static double c = C_1;
+
+    /**
+     * @return The value of the speed of light used in our calculations
+     */
+    public static double getC() {
         return c;
     }
 
-    public void setExactC(boolean exact) {
+    public static void setC(boolean exact, boolean one) {
         if (exact) {
-            c = 299_792_458;
+            c = EXACT_C;
+        } else if (one) {
+            c = C_1;
         } else {
-            c = 3 * 10 ^ 8;
+            c = APPROXIMATE_C;
         }
     }
 
-    public boolean isExactC() {
-        return c == 299_792_458;
+    public static boolean isExactC() {
+        return c == EXACT_C;
     }
 
-    public double[] pointTransform(double beta, double t, double x) {
-        double t_new = (x - beta * t) * lorentz_factor(beta);
-        double x_new = (t - beta * t) * lorentz_factor(beta);
+    public static boolean isC1() {
+        return c == C_1;
+    }
 
-        // I have been programming in Python too much
-        return new double[] { t_new, x_new };
+    public static boolean isApproximateC() {
+        return c == APPROXIMATE_C;
+    }
+
+    public static double xTransform(double beta, double x, double t) {
+        return lorentz_factor(beta) * (x - beta * c * t);
+    }
+
+    public static double tTransform(double beta, double x, double t) {
+        return lorentz_factor(beta) * (c * t - beta * x) / c;
+    }
+
+    public static double restT(double beta, double x, double t) {
+        return (c * t / lorentz_factor(beta) + beta * x) / c;
+    }
+
+    public static double restX(double beta, double x, double t) {
+        return (x / lorentz_factor(beta) + beta * c * t);
     }
 
     public static double lorentz_factor(double beta) {
@@ -66,19 +97,19 @@ public class LorentzTransform {
         }
 
         public double getT(double observerBeta) {
-            return (t - observerBeta * x) * LorentzTransform.lorentz_factor(observerBeta);
+            return LorentzTransform.tTransform(observerBeta, x, t);
         }
 
         public void setT(double observerBeta, double observedT) {
-            this.t = observedT / lorentz_factor(observerBeta) + observerBeta * x;
+            this.t = LorentzTransform.restT(observerBeta, x, observedT);
         }
 
         public double getX(double observerBeta) {
-            return (x - observerBeta * t) * LorentzTransform.lorentz_factor(observerBeta);
+            return LorentzTransform.xTransform(observerBeta, x, t);
         }
 
         public void setX(double observerBeta, double observedX) {
-            this.x = observedX / lorentz_factor(observerBeta) + observerBeta * t;
+            this.x = LorentzTransform.restX(observerBeta, observedX, t);
         }
 
         public String toString() {
