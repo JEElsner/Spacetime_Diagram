@@ -44,7 +44,7 @@ class SpacetimeObjectListModel extends AbstractSequentialList<SpacetimeObject> i
     @Override
     public boolean add(SpacetimeObject obj) {
         if (objects.add(obj)) {
-            ListDataEvent e = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, objects.size() - 2,
+            ListDataEvent e = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, objects.size() - 1,
                     objects.size() - 1);
             listeners.forEach(l -> l.intervalAdded(e));
 
