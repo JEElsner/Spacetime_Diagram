@@ -49,9 +49,9 @@ public class GUI extends JFrame {
 
         objects = new SpacetimeObjectListModel();
 
-        objects.add(new SpacetimeTraveller("foo", 0.1, 0, 0));
-        objects.add(new SpacetimeTraveller("bar", -0.6, 0, 50));
-        objects.add(new SpacetimeObject("baz", 50, -50));
+        // objects.add(new SpacetimeTraveller("foo", 0.1, 0, 0));
+        // objects.add(new SpacetimeTraveller("bar", -0.6, 0, 50));
+        // objects.add(new SpacetimeObject("baz", 50, -50));
 
         // Set how the GUI closes
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
