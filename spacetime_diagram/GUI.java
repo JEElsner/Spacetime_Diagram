@@ -195,6 +195,16 @@ public class GUI extends JFrame {
         JTextField xField = new JTextField(20);
 
         xField.setEnabled(false);
+        xField.addActionListener(e -> {
+            try {
+                double newX = Double.valueOf(xField.getText());
+                objectList.getSelectedValue().setX(graph.getReferenceFrameBeta(), newX);
+
+                graph.repaint();
+            } catch (NumberFormatException ex) {
+                xField.setText("" + objectList.getSelectedValue().getX(graph.getReferenceFrameBeta()));
+            }
+        });
 
         xLabel.setLabelFor(xField);
         objSettingsPnl.add(xLabel, objSettingsGbc);
@@ -208,6 +218,16 @@ public class GUI extends JFrame {
         JTextField tField = new JTextField(20);
 
         tField.setEnabled(false);
+        tField.addActionListener(e -> {
+            try {
+                double newT = Double.valueOf(tField.getText());
+                objectList.getSelectedValue().setX(graph.getReferenceFrameBeta(), newT);
+
+                graph.repaint();
+            } catch (NumberFormatException ex) {
+                tField.setText("" + objectList.getSelectedValue().getT(graph.getReferenceFrameBeta()));
+            }
+        });
 
         xLabel.setLabelFor(tField);
         objSettingsPnl.add(tLabel, objSettingsGbc);
@@ -221,6 +241,18 @@ public class GUI extends JFrame {
         JTextField betaField = new JTextField(20);
 
         betaField.setEnabled(false);
+        betaField.addActionListener(e -> {
+            SpacetimeTraveller traveller = (SpacetimeTraveller) objectList.getSelectedValue();
+
+            try {
+                double newBeta = Double.valueOf(betaField.getText());
+                betaField.setText("" + traveller.setBeta(graph.getReferenceFrameBeta(), newBeta));
+
+                graph.repaint();
+            } catch (NumberFormatException ex) {
+                betaField.setText("" + traveller.getBeta(graph.getReferenceFrameBeta()));
+            }
+        });
 
         xLabel.setLabelFor(betaField);
         objSettingsPnl.add(betaLabel, objSettingsGbc);
