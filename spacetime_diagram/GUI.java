@@ -27,6 +27,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
@@ -54,6 +56,10 @@ public class GUI extends JFrame {
         referenceFrames.put("Rest Frame", new double[] { 0, 0 });
 
         objects = new SpacetimeObjectList();
+
+        objects.add(new SpacetimeTraveller("foo", 0.1, 0, 0));
+        objects.add(new SpacetimeTraveller("bar", -0.6, 0, 50));
+        objects.add(new SpacetimeObject("baz", 50, -50));
 
         // Set how the GUI closes
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -118,21 +124,21 @@ public class GUI extends JFrame {
         objectListPanel.setBorder(BorderFactory.createTitledBorder("Spacetime Objects"));
 
         JList<SpacetimeObject> objectList = new JList<>(objects);
-
-        objects.add(new SpacetimeTraveller("foo", 0.1, 0, 0));
-        objects.add(new SpacetimeTraveller("bar", -0.6, 0, 50));
-        objects.add(new SpacetimeObject("baz", 50, -50));
+        JScrollPane objectListScrollPane = new JScrollPane(objectList);
+        objectListScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         objectListPanel.setLayout(new GridBagLayout());
         GridBagConstraints listPnlGbc = new GridBagConstraints();
         listPnlGbc.gridx = 0;
         listPnlGbc.gridy = 0;
+        listPnlGbc.weightx = listPnlGbc.weighty = 1;
         listPnlGbc.insets = new Insets(2, 2, 2, 2);
         listPnlGbc.fill = GridBagConstraints.BOTH;
 
         listPnlGbc.gridwidth = 3;
-        objectListPanel.add(objectList, listPnlGbc);
+        objectListPanel.add(objectListScrollPane, listPnlGbc);
         listPnlGbc.gridwidth = 1;
+        listPnlGbc.weighty = 0;
         listPnlGbc.gridy++;
 
         JButton addEventBtn = new JButton("Add Event");
