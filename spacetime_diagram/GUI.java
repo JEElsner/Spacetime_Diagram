@@ -144,11 +144,16 @@ public class GUI extends JFrame {
         });
 
         JButton removeBtn = new JButton("Remove");
+        removeBtn.setEnabled(false);
         removeBtn.addActionListener(e -> {
             int i = objectList.getSelectedIndex();
             if (0 <= i && i < objects.size()) {
                 objects.remove(i);
             }
+        });
+
+        objectList.addListSelectionListener(e -> {
+            removeBtn.setEnabled(objectList.getSelectedIndex() != -1);
         });
 
         objectListPanel.add(addEventBtn, listPnlGbc);
