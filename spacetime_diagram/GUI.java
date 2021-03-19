@@ -171,13 +171,25 @@ public class GUI extends JFrame {
         JPanel graphPnl = new JPanel();
         graphPnl.setBorder(BorderFactory.createTitledBorder("Graph"));
 
-        // Spacetime travellers
-        ArrayList<SpacetimeObject> travellers = new ArrayList<>();
-        travellers.add(new SpacetimeTraveller("foo", 0.1, 0, 0));
-        travellers.add(new SpacetimeTraveller("bar", -0.6, 0, 50));
-        travellers.add(new SpacetimeObject("baz", 50, -50));
+        graph = new Diagram(objects);
+        objects.addListDataListener(new ListDataListener() {
 
-        graph = new Diagram(travellers);
+            @Override
+            public void intervalAdded(ListDataEvent e) {
+                graph.repaint();
+            }
+
+            @Override
+            public void intervalRemoved(ListDataEvent e) {
+                graph.repaint();
+            }
+
+            @Override
+            public void contentsChanged(ListDataEvent e) {
+                graph.repaint();
+            }
+
+        });
 
         graphPnl.add(graph);
 
