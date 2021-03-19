@@ -83,7 +83,10 @@ public class Diagram extends Canvas {
             if (obj instanceof SpacetimeTraveller) {
                 SpacetimeTraveller traveller = (SpacetimeTraveller) obj;
 
-                drawWorldLine(g2d, (int) Math.round(traveller.getXIntercept()), traveller.getBeta());
+                double travellerBeta = traveller.getBeta(referenceFrameBeta);
+                int travellerIntercept = (int) Math.round(traveller.getXIntercept(referenceFrameBeta));
+
+                drawWorldLine(g2d, travellerIntercept, travellerBeta);
             } else {
                 int radius = 5;
 
@@ -96,18 +99,14 @@ public class Diagram extends Canvas {
     }
 
     public void drawWorldLine(Graphics2D g2d, int startX, double beta) {
-
-        // Get the observed speed of the travelling object
-        double speedInRefFrame = LorentzTransform.speedTransform(beta, referenceFrameBeta);
-
         int dt = height;
-        int dx = (int) Math.round(dt * speedInRefFrame);
+        int dx = (int) Math.round(dt * beta);
 
         // Keep the lines from extending beyond the left and right edges of the graph so
         // everything looks pretty.
         if (Math.abs(startX + dx) > width / 2) {
             dx = (int) Math.copySign(width / 2, dx) - startX;
-            dt = (int) Math.round(dx / speedInRefFrame);
+            dt = (int) Math.round(dx / beta);
         }
 
         g2d.drawLine(startX, 0, startX + dx, dt);

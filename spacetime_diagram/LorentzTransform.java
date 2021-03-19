@@ -94,6 +94,10 @@ public class LorentzTransform {
             return beta;
         }
 
+        public double getBeta(double observerBeta) {
+            return LorentzTransform.speedTransform(beta, observerBeta);
+        }
+
         public void setBeta(double beta) {
             if (Math.abs(beta) < 1)
                 this.beta = beta;
@@ -102,6 +106,10 @@ public class LorentzTransform {
         public double getXIntercept() {
             // Solve for the x-intercept
             return (this.getX() / beta - this.getT()) * beta;
+        }
+
+        public double getXIntercept(double observerBeta) {
+            return (getXIntercept() - observerBeta * getT()) * LorentzTransform.lorentz_factor(observerBeta);
         }
     }
 }
