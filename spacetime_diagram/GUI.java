@@ -211,11 +211,13 @@ public class GUI extends JFrame {
         objectListPanel.add(removeBtn, listPnlGbc);
 
         masterGBC.anchor = GridBagConstraints.CENTER;
-        masterGBC.fill = GridBagConstraints.VERTICAL;
-        masterGBC.weighty = 1;
+        masterGBC.fill = GridBagConstraints.BOTH;
+        masterGBC.weightx = masterGBC.weighty = 1;
         this.add(objectListPanel, masterGBC);
         masterGBC.weighty = 0;
         masterGBC.gridy++;
+
+        // Create Object details panel
 
         JPanel objSettingsPnl = new JPanel();
         objSettingsPnl.setBorder(BorderFactory.createTitledBorder("Selected Event/Traveller"));
@@ -376,6 +378,8 @@ public class GUI extends JFrame {
         });
 
         masterGBC.anchor = GridBagConstraints.PAGE_END;
+        masterGBC.fill = GridBagConstraints.HORIZONTAL;
+        masterGBC.weightx = 1;
         this.add(objSettingsPnl, masterGBC);
         masterGBC.gridy = 0;
         masterGBC.gridx++;
