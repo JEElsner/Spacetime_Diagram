@@ -5,10 +5,13 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.AbstractList;
+import java.util.AbstractSequentialList;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
@@ -27,6 +30,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
+import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import spacetime_diagram.LorentzTransform.*;
@@ -41,11 +45,15 @@ public class GUI extends JFrame {
 
     private Diagram graph;
 
+    private SpacetimeObjectList objects;
+
     public GUI() {
         super("Spacetime Diagram");
 
         referenceFrames = new HashMap<>();
         referenceFrames.put("Rest Frame", new double[] { 0, 0 });
+
+        objects = new SpacetimeObjectList();
 
         // Set how the GUI closes
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -109,12 +117,11 @@ public class GUI extends JFrame {
         JPanel objectListPanel = new JPanel();
         objectListPanel.setBorder(BorderFactory.createTitledBorder("Spacetime Objects"));
 
-        DefaultListModel<SpacetimeObject> objectListModel = new DefaultListModel<>();
-        JList<SpacetimeObject> objectList = new JList<>(objectListModel);
+        JList<SpacetimeObject> objectList = new JList<>(objects);
 
-        objectListModel.addElement(new SpacetimeTraveller("foo", 0.1, 0, 0));
-        objectListModel.addElement(new SpacetimeTraveller("bar", -0.6, 0, 50));
-        objectListModel.addElement(new SpacetimeObject("baz", 50, -50));
+        objects.add(new SpacetimeTraveller("foo", 0.1, 0, 0));
+        objects.add(new SpacetimeTraveller("bar", -0.6, 0, 50));
+        objects.add(new SpacetimeObject("baz", 50, -50));
 
         objectListPanel.setLayout(new GridBagLayout());
         GridBagConstraints listPnlGbc = new GridBagConstraints();
@@ -130,18 +137,20 @@ public class GUI extends JFrame {
 
         JButton addEventBtn = new JButton("Add Event");
         addEventBtn.addActionListener(e -> {
-            objectListModel.addElement(new SpacetimeObject("New Event", 0, 0));
+            objects.add(new SpacetimeObject("New Event", 0, 0));
         });
 
         JButton addTravellerBtn = new JButton("Add traveller");
         addTravellerBtn.addActionListener(e -> {
-            objectListModel.addElement(new SpacetimeTraveller("New Traveller", 0, 0, 0));
+            objects.add(new SpacetimeTraveller("New Traveller", 0, 0, 0));
         });
 
         JButton removeBtn = new JButton("Remove");
         removeBtn.addActionListener(e -> {
             int i = objectList.getSelectedIndex();
-            objectListModel.remove(i);
+            if (0 <= i && i < objects.size()) {
+                objects.remove(i);
+            }
         });
 
         objectListPanel.add(addEventBtn, listPnlGbc);
@@ -224,5 +233,90 @@ public class GUI extends JFrame {
         public Object getSelectedItem() {
             return selectedItem;
         }
+    }
+
+    private class SpacetimeObjectList extends AbstractSequentialList<SpacetimeObject>
+            implements ListModel<SpacetimeObject> {
+
+        private ArrayList<SpacetimeObject> objects;
+        private ArrayList<ListDataListener> listeners;
+
+        public SpacetimeObjectList() {
+            objects = new ArrayList<>();
+            listeners = new ArrayList<>();
+        }
+
+        @Override
+        public int getSize() {
+            return objects.size();
+        }
+
+        @Override
+        public SpacetimeObject getElementAt(int index) {
+            return objects.get(index);
+        }
+
+        @Override
+        public void addListDataListener(ListDataListener l) {
+            listeners.add(l);
+        }
+
+        @Override
+        public void removeListDataListener(ListDataListener l) {
+            listeners.remove(l);
+        }
+
+        @Override
+        public boolean add(SpacetimeObject obj) {
+            if (objects.add(obj)) {
+                ListDataEvent e = new ListDataEvent(obj, ListDataEvent.INTERVAL_ADDED, 0, objects.size() - 1);
+                listeners.forEach(l -> l.intervalAdded(e));
+
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public boolean remove(Object obj) {
+            if (objects.remove(obj)) {
+                ListDataEvent e = new ListDataEvent(obj, ListDataEvent.INTERVAL_REMOVED, objects.size(),
+                        objects.size());
+                listeners.forEach(l -> l.intervalRemoved(e));
+
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public SpacetimeObject remove(int i) {
+            SpacetimeObject o = objects.remove(i);
+
+            if (o != null) {
+                ListDataEvent e = new ListDataEvent(o, ListDataEvent.INTERVAL_ADDED, objects.size(), objects.size());
+                listeners.forEach(l -> l.intervalRemoved(e));
+            }
+
+            return o;
+        }
+
+        @Override
+        public SpacetimeObject get(int index) {
+            return objects.get(index);
+        }
+
+        @Override
+        public int size() {
+            return objects.size();
+        }
+
+        @Override
+        public ListIterator<SpacetimeObject> listIterator(int index) {
+            return objects.listIterator(index);
+        }
+
     }
 }
