@@ -7,7 +7,7 @@ import java.util.UUID;
  * 
  * @author Jonathan Elsner
  */
-public class SpacetimeObject {
+public class SpacetimeEvent {
 
     private UUID uuid;
 
@@ -22,7 +22,7 @@ public class SpacetimeObject {
      * @param t    the time at which the event occurs
      * @param x    the position at which the event occurs
      */
-    public SpacetimeObject(String name, double t, double x) {
+    public SpacetimeEvent(String name, double t, double x) {
         this.name = name;
         this.t = t;
         this.x = x;

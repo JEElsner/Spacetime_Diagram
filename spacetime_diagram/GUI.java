@@ -52,11 +52,11 @@ public class GUI extends JFrame {
     /**
      * Stores and monitors spacetime travellers (worldlines) and spacetime events.
      * 
-     * @see SpacetimeObjectListModel
-     * @see SpacetimeObject
+     * @see SpacetimeEventListModel
+     * @see SpacetimeEvent
      * @see SpacetimeTraveller
      */
-    private SpacetimeObjectListModel objects;
+    private SpacetimeEventListModel objects;
 
     /**
      * Construct the {@code GUI} and its subcomponents
@@ -68,7 +68,7 @@ public class GUI extends JFrame {
         super("Spacetime Diagram");
 
         // Create the list where we store all of the spacetime objects
-        objects = new SpacetimeObjectListModel();
+        objects = new SpacetimeEventListModel();
 
         // Initialize the diagram with some preset items for testing
         // objects.add(new SpacetimeTraveller("foo", 0.1, 0, 0));
@@ -173,7 +173,7 @@ public class GUI extends JFrame {
         JPanel objectListPanel = new JPanel();
         objectListPanel.setBorder(BorderFactory.createTitledBorder("Spacetime Objects"));
 
-        JList<SpacetimeObject> objectList = new JList<>(objects);
+        JList<SpacetimeEvent> objectList = new JList<>(objects);
 
         JScrollPane objectListScrollPane = new JScrollPane(objectList);
         objectListScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -195,7 +195,7 @@ public class GUI extends JFrame {
         // Buttons to add and remove items from the list
         JButton addEventBtn = new JButton("Add Event");
         addEventBtn.addActionListener(e -> {
-            objects.add(new SpacetimeObject("New Event", 0, 0));
+            objects.add(new SpacetimeEvent("New Event", 0, 0));
         });
 
         JButton addTravellerBtn = new JButton("Add traveller");
@@ -352,7 +352,7 @@ public class GUI extends JFrame {
 
         // Update the values in the details panel if the object selection changes
         objectList.addListSelectionListener(e -> {
-            SpacetimeObject object = objectList.getSelectedValue();
+            SpacetimeEvent object = objectList.getSelectedValue();
 
             // Disable panel when no object is selected in the list
             if (object == null) {
@@ -391,7 +391,7 @@ public class GUI extends JFrame {
         // because relativity
         observerSpeed.addChangeListener(e -> {
             // TODO redundant
-            SpacetimeObject object = objectList.getSelectedValue();
+            SpacetimeEvent object = objectList.getSelectedValue();
 
             if (object == null) {
                 return;

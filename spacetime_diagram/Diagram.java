@@ -53,7 +53,7 @@ public class Diagram extends Canvas implements ComponentListener {
     private double referenceFrameBeta = 0.0;
 
     // The list of objects to draw on the graph
-    private Iterable<SpacetimeObject> objects;
+    private Iterable<SpacetimeEvent> objects;
 
     /**
      * Create a Spacetime diagram for the iterable of SpacetimeObjects. As the
@@ -62,7 +62,7 @@ public class Diagram extends Canvas implements ComponentListener {
      * 
      * @param objects the objects to draw on the spacetime diagram
      */
-    public Diagram(Iterable<SpacetimeObject> objects) {
+    public Diagram(Iterable<SpacetimeEvent> objects) {
         this.objects = objects;
 
         // Calculate the full dimensions of the starting canvas
@@ -114,7 +114,7 @@ public class Diagram extends Canvas implements ComponentListener {
 
         // Draw all of the SpacetimeObjects
         int color = 0;
-        for (SpacetimeObject obj : objects) {
+        for (SpacetimeEvent obj : objects) {
             g2d.setColor(lineColors[(color++ % lineColors.length)]);
 
             // Draw a worldline if the object moves

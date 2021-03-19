@@ -18,20 +18,20 @@ import javax.swing.event.ListDataListener;
  *          as necessary.
  * 
  * @author Jonathan Elsner
- * @see SpacetimeObject
+ * @see SpacetimeEvent
  * @see GUI
  * @see Diagram
  * @see ListDataEvent
  */
-class SpacetimeObjectListModel extends AbstractSequentialList<SpacetimeObject> implements ListModel<SpacetimeObject> {
+class SpacetimeEventListModel extends AbstractSequentialList<SpacetimeEvent> implements ListModel<SpacetimeEvent> {
 
     /**
      * The actual list of objects this ListModel stores
      * 
-     * @see SpacetimeObject
+     * @see SpacetimeEvent
      * @see SpacetimeTraveller
      */
-    private ArrayList<SpacetimeObject> objects;
+    private ArrayList<SpacetimeEvent> objects;
 
     /**
      * The listeners waiting for changes to this list
@@ -43,7 +43,7 @@ class SpacetimeObjectListModel extends AbstractSequentialList<SpacetimeObject> i
     /**
      * Constructs the {@code SpacetimeObjectListModel}
      */
-    public SpacetimeObjectListModel() {
+    public SpacetimeEventListModel() {
         objects = new ArrayList<>();
         listeners = new ArrayList<>();
     }
@@ -67,10 +67,10 @@ class SpacetimeObjectListModel extends AbstractSequentialList<SpacetimeObject> i
      * @return the {@code SpacetimeObject} at the {@code index}
      * @throws IndexOutOfBoundsException if the index is out of range
      * 
-     * @see SpacetimeObject
+     * @see SpacetimeEvent
      */
     @Override
-    public SpacetimeObject getElementAt(int index) {
+    public SpacetimeEvent getElementAt(int index) {
         return objects.get(index);
     }
 
@@ -110,7 +110,7 @@ class SpacetimeObjectListModel extends AbstractSequentialList<SpacetimeObject> i
      *         otherwise
      */
     @Override
-    public boolean add(SpacetimeObject obj) {
+    public boolean add(SpacetimeEvent obj) {
         if (objects.add(obj)) {
 
             // Construct event and notify listeners
@@ -156,8 +156,8 @@ class SpacetimeObjectListModel extends AbstractSequentialList<SpacetimeObject> i
      * @throws IndexOutOfBoundsException if the index is out of range
      */
     @Override
-    public SpacetimeObject remove(int i) {
-        SpacetimeObject o = objects.remove(i);
+    public SpacetimeEvent remove(int i) {
+        SpacetimeEvent o = objects.remove(i);
 
         if (o != null) {
             // Construct event and notify listeners
@@ -179,7 +179,7 @@ class SpacetimeObjectListModel extends AbstractSequentialList<SpacetimeObject> i
      * @see javax.swing.JList
      * @see GUI
      */
-    public void fireChangeEvent(SpacetimeObject object) {
+    public void fireChangeEvent(SpacetimeEvent object) {
         if (!objects.contains(object)) {
             throw new IllegalArgumentException("Object is not in this list");
         }
@@ -218,7 +218,7 @@ class SpacetimeObjectListModel extends AbstractSequentialList<SpacetimeObject> i
      * @throws IndexOutOfBoundsException if the index is out of range
      */
     @Override
-    public SpacetimeObject get(int index) {
+    public SpacetimeEvent get(int index) {
         return objects.get(index);
     }
 
@@ -244,7 +244,7 @@ class SpacetimeObjectListModel extends AbstractSequentialList<SpacetimeObject> i
      * @see List.listIterator()
      */
     @Override
-    public ListIterator<SpacetimeObject> listIterator(int index) {
+    public ListIterator<SpacetimeEvent> listIterator(int index) {
         return objects.listIterator(index);
     }
 

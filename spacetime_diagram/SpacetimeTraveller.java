@@ -5,7 +5,7 @@ package spacetime_diagram;
  * 
  * @author Jonathan Elsner
  */
-public class SpacetimeTraveller extends SpacetimeObject {
+public class SpacetimeTraveller extends SpacetimeEvent {
     private double beta;
 
     /**
