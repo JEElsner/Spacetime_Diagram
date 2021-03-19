@@ -75,6 +75,10 @@ public class LorentzTransform {
             this.x = observedX / lorentz_factor(observerBeta) + observerBeta * t;
         }
 
+        public String toString() {
+            return name;
+        }
+
     }
 
     public static class SpacetimeTraveller extends SpacetimeObject {

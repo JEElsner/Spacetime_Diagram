@@ -15,14 +15,18 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
 import spacetime_diagram.LorentzTransform.*;
@@ -101,48 +105,56 @@ public class GUI extends JFrame {
         refrenceFrameChooser.setEditable(true);
         optionsPanel.add(refrenceFrameChooser);
 
-        // Configure editor for each reference frame
-        itemEditor.setBorder(BorderFactory.createTitledBorder("Reference Frame Information"));
+        // Configure object list
+        JPanel objectListPanel = new JPanel();
+        objectListPanel.setBorder(BorderFactory.createTitledBorder("Spacetime Objects"));
 
-        itemEditor.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.LINE_END;
-        gbc.insets = new Insets(0, 0, 0, 10);
+        DefaultListModel<SpacetimeObject> objectListModel = new DefaultListModel<>();
+        JList<SpacetimeObject> objectList = new JList<>(objectListModel);
 
-        itemEditor.add(new JLabel("\u03B2 ="), gbc);
-        gbc.gridx++;
+        objectListModel.addElement(new SpacetimeTraveller("foo", 0.1, 0, 0));
+        objectListModel.addElement(new SpacetimeTraveller("bar", -0.6, 0, 50));
+        objectListModel.addElement(new SpacetimeObject("baz", 50, -50));
 
-        JTextField betaTextField = new JTextField("0", 3);
-        itemEditor.add(betaTextField, gbc);
-        gbc.gridx = 0;
-        gbc.gridy++;
+        objectListPanel.setLayout(new GridBagLayout());
+        GridBagConstraints listPnlGbc = new GridBagConstraints();
+        listPnlGbc.gridx = 0;
+        listPnlGbc.gridy = 0;
+        listPnlGbc.insets = new Insets(2, 2, 2, 2);
+        listPnlGbc.fill = GridBagConstraints.BOTH;
 
-        itemEditor.add(new JLabel("Intersect Point:"), gbc);
-        gbc.gridx++;
+        listPnlGbc.gridwidth = 3;
+        objectListPanel.add(objectList, listPnlGbc);
+        listPnlGbc.gridwidth = 1;
+        listPnlGbc.gridy++;
 
-        gbc.insets = new Insets(0, 0, 0, 0);
-        itemEditor.add(new JLabel("t = "), gbc);
-        gbc.gridx++;
-        gbc.insets = new Insets(0, 0, 0, 10);
+        JButton addEventBtn = new JButton("Add Event");
+        addEventBtn.addActionListener(e -> {
+            objectListModel.addElement(new SpacetimeObject("New Event", 0, 0));
+        });
 
-        JTextField refFrameTTextField = new JTextField("0", 3);
-        itemEditor.add(refFrameTTextField, gbc);
-        gbc.gridx++;
+        JButton addTravellerBtn = new JButton("Add traveller");
+        addTravellerBtn.addActionListener(e -> {
+            objectListModel.addElement(new SpacetimeTraveller("New Traveller", 0, 0, 0));
+        });
 
-        gbc.insets = new Insets(0, 0, 0, 0);
-        itemEditor.add(new JLabel("x = "), gbc);
-        gbc.gridx++;
+        JButton removeBtn = new JButton("Remove");
+        removeBtn.addActionListener(e -> {
+            int i = objectList.getSelectedIndex();
+            objectListModel.remove(i);
+        });
 
-        JTextField refFrameXTextField = new JTextField("0", 3);
-        itemEditor.add(refFrameXTextField, gbc);
-        gbc.gridx = 0;
-        gbc.gridy++;
-        gbc.insets = new Insets(0, 0, 0, 10);
+        objectListPanel.add(addEventBtn, listPnlGbc);
+        listPnlGbc.gridx++;
 
-        optionsPanel.add(itemEditor);
+        objectListPanel.add(addTravellerBtn, listPnlGbc);
+        listPnlGbc.gridx++;
 
+        objectListPanel.add(removeBtn, listPnlGbc);
+
+        optionsPanel.add(objectListPanel);
+
+        // Add sidebar to window
         this.add(optionsPanel, BorderLayout.LINE_START);
 
         // Spacetime graph & panel
