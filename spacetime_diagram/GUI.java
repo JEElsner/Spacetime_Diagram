@@ -7,7 +7,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.HashMap;
 import java.util.Hashtable;
 
 import javax.imageio.ImageIO;
@@ -30,9 +29,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-
-import spacetime_diagram.LorentzTransform.SpacetimeObject;
-import spacetime_diagram.LorentzTransform.SpacetimeTraveller;
 
 /**
  * A simple GUI for drawing accurate Spacetime diagrams and observing how these

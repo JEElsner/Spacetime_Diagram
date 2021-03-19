@@ -8,8 +8,6 @@ import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-import spacetime_diagram.LorentzTransform.SpacetimeObject;
-
 /**
  * Stores and tracks changes to the Spacetime objects shown in the diagram. This
  * custom list is used so that changes to this list fire updates in the GUI that

@@ -5,10 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.geom.AffineTransform;
-
-import spacetime_diagram.LorentzTransform.SpacetimeObject;
-import spacetime_diagram.LorentzTransform.SpacetimeTraveller;
-
 import java.awt.*;
 
 /**
