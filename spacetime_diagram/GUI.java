@@ -40,8 +40,6 @@ public class GUI extends JFrame {
      */
     private static final long serialVersionUID = -1681071496023255137L;
 
-    public HashMap<String, double[]> referenceFrames;
-
     private Diagram graph;
 
     private SpacetimeObjectListModel objects;
