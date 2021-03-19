@@ -10,12 +10,12 @@ import javax.swing.event.ListDataListener;
 
 import spacetime_diagram.LorentzTransform.SpacetimeObject;
 
-class SpacetimeObjectList extends AbstractSequentialList<SpacetimeObject> implements ListModel<SpacetimeObject> {
+class SpacetimeObjectListModel extends AbstractSequentialList<SpacetimeObject> implements ListModel<SpacetimeObject> {
 
     private ArrayList<SpacetimeObject> objects;
     private ArrayList<ListDataListener> listeners;
 
-    public SpacetimeObjectList() {
+    public SpacetimeObjectListModel() {
         objects = new ArrayList<>();
         listeners = new ArrayList<>();
     }

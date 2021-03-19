@@ -37,7 +37,7 @@ public class GUI extends JFrame {
 
     private Diagram graph;
 
-    private SpacetimeObjectList objects;
+    private SpacetimeObjectListModel objects;
 
     private HashMap<SpacetimeObject, SpacetimeObjectDetailCard> detailCards;
 
@@ -47,7 +47,7 @@ public class GUI extends JFrame {
         referenceFrames = new HashMap<>();
         referenceFrames.put("Rest Frame", new double[] { 0, 0 });
 
-        objects = new SpacetimeObjectList();
+        objects = new SpacetimeObjectListModel();
 
         objects.add(new SpacetimeTraveller("foo", 0.1, 0, 0));
         objects.add(new SpacetimeTraveller("bar", -0.6, 0, 50));
