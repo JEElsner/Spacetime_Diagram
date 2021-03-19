@@ -55,20 +55,12 @@ public class LorentzTransform {
             this.name = name;
         }
 
-        public double getT() {
-            return t;
-        }
-
         public double getT(double observerBeta) {
             return (t - observerBeta * t) * LorentzTransform.lorentz_factor(observerBeta);
         }
 
         public void setT(double t) {
             this.t = t;
-        }
-
-        public double getX() {
-            return x;
         }
 
         public double getX(double observerBeta) {
@@ -90,10 +82,6 @@ public class LorentzTransform {
             this.beta = beta;
         }
 
-        public double getBeta() {
-            return beta;
-        }
-
         public double getBeta(double observerBeta) {
             return LorentzTransform.speedTransform(beta, observerBeta);
         }
@@ -103,13 +91,9 @@ public class LorentzTransform {
                 this.beta = beta;
         }
 
-        public double getXIntercept() {
-            // Solve for the x-intercept
-            return (this.getX() / beta - this.getT()) * beta;
-        }
-
         public double getXIntercept(double observerBeta) {
-            return (getXIntercept() - observerBeta * getT()) * LorentzTransform.lorentz_factor(observerBeta);
+            // Solve for the x-intercept
+            return (this.getX(observerBeta) / beta - this.getT(observerBeta)) * getBeta(observerBeta);
         }
     }
 }
