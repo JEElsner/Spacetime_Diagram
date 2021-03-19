@@ -2,7 +2,6 @@ package spacetime_diagram;
 
 import java.util.AbstractSequentialList;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.ListModel;

@@ -1,12 +1,11 @@
 package spacetime_diagram;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics2D;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -15,10 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -27,7 +23,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
@@ -53,9 +48,6 @@ public class GUI extends JFrame {
 
     public GUI() {
         super("Spacetime Diagram");
-
-        referenceFrames = new HashMap<>();
-        referenceFrames.put("Rest Frame", new double[] { 0, 0 });
 
         objects = new SpacetimeObjectListModel();
 
@@ -108,23 +100,8 @@ public class GUI extends JFrame {
         JPanel globalOptions = new JPanel();
 
         // Configure top panel in sidebar
-        globalOptions.setBorder(BorderFactory.createTitledBorder("Options"));
+        globalOptions.setBorder(BorderFactory.createTitledBorder("Reference Frame Speed"));
         globalOptions.setLayout(new BoxLayout(globalOptions, BoxLayout.PAGE_AXIS));
-
-        JRadioButton approxCRadio = new JRadioButton("C = 3*10^8m/s");
-        JRadioButton exactCRadio = new JRadioButton("C = 299,792,458m/s");
-
-        ButtonGroup cSpeedRadioGroup = new ButtonGroup();
-        cSpeedRadioGroup.add(approxCRadio);
-        cSpeedRadioGroup.add(exactCRadio);
-
-        // globalOptions.add(approxCRadio);
-        // globalOptions.add(exactCRadio);
-
-        approxCRadio.setSelected(true);
-
-        JCheckBox shiftViewerCheckBox = new JCheckBox("Shift Current Reference Frame world line to origin");
-        // globalOptions.add(shiftViewerCheckBox);
 
         JSlider observerSpeed = new JSlider(-100, 100, 0);
         observerSpeed.setMajorTickSpacing(20);
@@ -150,13 +127,6 @@ public class GUI extends JFrame {
         masterGBC.weightx = 0.1;
         this.add(globalOptions, masterGBC);
         masterGBC.gridy++;
-
-        // Configure reference frame drop-down menu
-        ReferenceFrameDataModel frameChooserModel = new ReferenceFrameDataModel(this);
-        JComboBox<String> refrenceFrameChooser = new JComboBox<String>(new ReferenceFrameDataModel(this));
-        refrenceFrameChooser.setSelectedItem("Rest Frame");
-        refrenceFrameChooser.setEditable(true);
-        // optionsPanel.add(refrenceFrameChooser);
 
         // Configure object list
         JPanel objectListPanel = new JPanel();
