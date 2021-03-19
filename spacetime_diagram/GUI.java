@@ -292,9 +292,10 @@ public class GUI extends JFrame {
 
         @Override
         public boolean remove(Object obj) {
+            int i = objects.indexOf(obj);
+
             if (objects.remove(obj)) {
-                ListDataEvent e = new ListDataEvent(obj, ListDataEvent.INTERVAL_REMOVED, objects.size(),
-                        objects.size());
+                ListDataEvent e = new ListDataEvent(obj, ListDataEvent.INTERVAL_REMOVED, i, i);
                 listeners.forEach(l -> l.intervalRemoved(e));
 
                 return true;
@@ -308,7 +309,7 @@ public class GUI extends JFrame {
             SpacetimeObject o = objects.remove(i);
 
             if (o != null) {
-                ListDataEvent e = new ListDataEvent(o, ListDataEvent.INTERVAL_ADDED, objects.size(), objects.size());
+                ListDataEvent e = new ListDataEvent(o, ListDataEvent.INTERVAL_ADDED, i, i);
                 listeners.forEach(l -> l.intervalRemoved(e));
             }
 
