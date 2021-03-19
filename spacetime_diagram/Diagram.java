@@ -55,9 +55,14 @@ public class Diagram extends Canvas implements ComponentListener {
      */
     private int drawingHeight = 500;
 
+    /**
+     * Pixels per unit of x and t
+     */
+    private double pixelsPerUnit = 25;
+
     // Padding between the graph and the full canvas size
-    private int sidePadding = 20;
-    private int bottomPadding = 30;
+    private int sidePadding = 10;
+    private int bottomPadding = 10;
     private int topPadding = 10;
 
     // How the lines are painted
@@ -140,14 +145,14 @@ public class Diagram extends Canvas implements ComponentListener {
 
                 // Find the speed and x-intercept of the traveller
                 double travellerBeta = traveller.getBeta(referenceFrameBeta);
-                int travellerIntercept = (int) Math.round(traveller.getXIntercept(referenceFrameBeta));
+                int travellerIntercept = (int) Math.round(traveller.getXIntercept(referenceFrameBeta) * pixelsPerUnit);
 
                 drawWorldLine(g2d, travellerIntercept, travellerBeta);
             } else { // Draw a dot if the object is an event
                 int radius = 5;
 
-                int x = (int) Math.round(obj.getX(referenceFrameBeta));
-                int t = (int) Math.round(obj.getT(referenceFrameBeta));
+                int x = (int) Math.round(obj.getX(referenceFrameBeta) * pixelsPerUnit);
+                int t = (int) Math.round(obj.getT(referenceFrameBeta) * pixelsPerUnit);
 
                 g2d.fillOval(x - radius, t - radius, radius * 2, radius * 2);
             }
@@ -198,8 +203,13 @@ public class Diagram extends Canvas implements ComponentListener {
 
     @Override
     public void componentResized(ComponentEvent e) {
+        double oldWidth = drawingWidth;
+
         drawingWidth = this.getWidth() - 2 * sidePadding;
         drawingHeight = this.getHeight() - topPadding - bottomPadding;
+
+        // Scale units with resize
+        pixelsPerUnit = pixelsPerUnit * drawingWidth / oldWidth;
     }
 
     @Override
