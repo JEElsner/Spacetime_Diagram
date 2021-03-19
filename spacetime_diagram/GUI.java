@@ -74,13 +74,13 @@ public class GUI extends JFrame {
         cSpeedRadioGroup.add(approxCRadio);
         cSpeedRadioGroup.add(exactCRadio);
 
-        globalOptions.add(approxCRadio);
-        globalOptions.add(exactCRadio);
+        // globalOptions.add(approxCRadio);
+        // globalOptions.add(exactCRadio);
 
         approxCRadio.setSelected(true);
 
         JCheckBox shiftViewerCheckBox = new JCheckBox("Shift Current Reference Frame world line to origin");
-        globalOptions.add(shiftViewerCheckBox);
+        // globalOptions.add(shiftViewerCheckBox);
 
         JSlider observerSpeed = new JSlider(-100, 100, 0);
         observerSpeed.setMajorTickSpacing(20);
@@ -108,7 +108,7 @@ public class GUI extends JFrame {
         JComboBox<String> refrenceFrameChooser = new JComboBox<String>(new ReferenceFrameDataModel(this));
         refrenceFrameChooser.setSelectedItem("Rest Frame");
         refrenceFrameChooser.setEditable(true);
-        optionsPanel.add(refrenceFrameChooser);
+        // optionsPanel.add(refrenceFrameChooser);
 
         // Configure object list
         JPanel objectListPanel = new JPanel();
