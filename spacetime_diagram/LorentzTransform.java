@@ -35,6 +35,10 @@ public class LorentzTransform {
         return (betaInRestFrame - observerBeta) / (1 - observerBeta * betaInRestFrame);
     }
 
+    public static double getRestBeta(double observerBeta, double observedBeta) {
+        return (observerBeta + observedBeta) / (1 + observerBeta * observedBeta);
+    }
+
     public static class SpacetimeObject {
 
         private String name;
@@ -59,16 +63,16 @@ public class LorentzTransform {
             return (t - observerBeta * t) * LorentzTransform.lorentz_factor(observerBeta);
         }
 
-        public void setT(double t) {
-            this.t = t;
+        public void setT(double observerBeta, double observedT) {
+            this.t = observedT / lorentz_factor(observerBeta) + observerBeta * x;
         }
 
         public double getX(double observerBeta) {
             return (x - observerBeta * t) * LorentzTransform.lorentz_factor(observerBeta);
         }
 
-        public void setX(double x) {
-            this.x = x;
+        public void setX(double observerBeta, double observedX) {
+            this.x = observedX / lorentz_factor(observerBeta) + observerBeta * t;
         }
 
     }
@@ -86,7 +90,9 @@ public class LorentzTransform {
             return LorentzTransform.speedTransform(beta, observerBeta);
         }
 
-        public void setBeta(double beta) {
+        public void setBeta(double observerBeta, double observedBeta) {
+            double beta = getRestBeta(observerBeta, observedBeta);
+
             if (Math.abs(beta) < 1)
                 this.beta = beta;
         }
