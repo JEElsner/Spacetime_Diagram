@@ -175,13 +175,16 @@ public class GUI extends JFrame {
         detailCards = new HashMap<>();
 
         objectList.addListSelectionListener(e -> {
-
             CardLayout cl = (CardLayout) objSettingsPnl.getLayout();
 
             SpacetimeObject selected = objects.get(objectList.getSelectedIndex());
             detailCards.get(selected).updateText(graph.getReferenceFrameBeta());
 
             cl.show(objSettingsPnl, selected.getUUID().toString());
+        });
+
+        observerSpeed.addChangeListener(e -> {
+            detailCards.get(objects.get(objectList.getSelectedIndex())).updateText(graph.getReferenceFrameBeta());
         });
 
         // TODO temporary during debugging with default spacetime objects
