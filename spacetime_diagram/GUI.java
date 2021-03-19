@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -21,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
+import javax.swing.JTextField;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
@@ -38,8 +40,6 @@ public class GUI extends JFrame {
     private Diagram graph;
 
     private SpacetimeObjectListModel objects;
-
-    private HashMap<SpacetimeObject, SpacetimeObjectDetailCard> detailCards;
 
     public GUI() {
         super("Spacetime Diagram");
@@ -163,30 +163,99 @@ public class GUI extends JFrame {
 
         JPanel objSettingsPnl = new JPanel();
         objSettingsPnl.setBorder(BorderFactory.createTitledBorder("Selected Event/Traveller"));
-        objSettingsPnl.setLayout(new CardLayout());
+        objSettingsPnl.setLayout(new GridBagLayout());
 
-        detailCards = new HashMap<>();
+        GridBagConstraints objSettingsGbc = new GridBagConstraints();
+        objSettingsGbc.gridx = objSettingsGbc.gridy = 0;
+        objSettingsGbc.anchor = GridBagConstraints.FIRST_LINE_START;
+        objSettingsGbc.fill = GridBagConstraints.HORIZONTAL;
+        objSettingsGbc.insets = new Insets(2, 2, 2, 2);
+
+        JLabel nameLabel = new JLabel("Name");
+        JTextField nameField = new JTextField(10);
+
+        nameLabel.setLabelFor(nameField);
+        objSettingsPnl.add(nameLabel, objSettingsGbc);
+        objSettingsGbc.gridx++;
+
+        objSettingsGbc.weightx = 1;
+        objSettingsPnl.add(nameField, objSettingsGbc);
+        objSettingsGbc.weightx = 0;
+        objSettingsGbc.fill = GridBagConstraints.NONE;
+        objSettingsGbc.gridx = 0;
+        objSettingsGbc.gridy++;
+
+        JLabel xLabel = new JLabel("x-Position");
+        JTextField xField = new JTextField(20);
+
+        xLabel.setLabelFor(xField);
+        objSettingsPnl.add(xLabel, objSettingsGbc);
+        objSettingsGbc.gridx++;
+
+        objSettingsPnl.add(xField, objSettingsGbc);
+        objSettingsGbc.gridx = 0;
+        objSettingsGbc.gridy++;
+
+        JLabel tLabel = new JLabel("Time");
+        JTextField tField = new JTextField(20);
+
+        xLabel.setLabelFor(tField);
+        objSettingsPnl.add(tLabel, objSettingsGbc);
+        objSettingsGbc.gridx++;
+
+        objSettingsPnl.add(tField, objSettingsGbc);
+        objSettingsGbc.gridx = 0;
+        objSettingsGbc.gridy++;
+
+        JLabel betaLabel = new JLabel("Beta");
+        JTextField betaField = new JTextField(20);
+
+        xLabel.setLabelFor(betaField);
+        objSettingsPnl.add(betaLabel, objSettingsGbc);
+        objSettingsGbc.gridx++;
+
+        objSettingsPnl.add(betaField, objSettingsGbc);
+        objSettingsGbc.gridx = 0;
+        objSettingsGbc.gridy++;
+
+        objSettingsGbc.fill = GridBagConstraints.VERTICAL;
+        objSettingsGbc.weighty = 1;
+        objSettingsPnl.add(Box.createVerticalGlue(), objSettingsGbc);
 
         objectList.addListSelectionListener(e -> {
-            CardLayout cl = (CardLayout) objSettingsPnl.getLayout();
+            SpacetimeObject object = objectList.getSelectedValue();
 
-            SpacetimeObject selected = objects.get(objectList.getSelectedIndex());
-            detailCards.get(selected).updateText(graph.getReferenceFrameBeta());
+            nameField.setText(object.getName());
 
-            cl.show(objSettingsPnl, selected.getUUID().toString());
+            // TODO formatting
+            xField.setText(String.valueOf(object.getX(graph.getReferenceFrameBeta())));
+            tField.setText(String.valueOf(object.getT(graph.getReferenceFrameBeta())));
+
+            if (object instanceof SpacetimeTraveller) {
+                betaLabel.setVisible(true);
+                betaField.setVisible(true);
+
+                betaField.setText(String.valueOf(((SpacetimeTraveller) object).getBeta(graph.getReferenceFrameBeta())));
+            } else {
+                betaLabel.setVisible(false);
+                betaField.setVisible(false);
+            }
         });
 
         observerSpeed.addChangeListener(e -> {
-            detailCards.get(objects.get(objectList.getSelectedIndex())).updateText(graph.getReferenceFrameBeta());
+            // TODO redundant
+            SpacetimeObject object = objectList.getSelectedValue();
+
+            nameField.setText(object.getName());
+
+            // TODO formatting
+            xField.setText(String.valueOf(object.getX(graph.getReferenceFrameBeta())));
+            tField.setText(String.valueOf(object.getT(graph.getReferenceFrameBeta())));
+
+            if (object instanceof SpacetimeTraveller) {
+                betaField.setText(String.valueOf(((SpacetimeTraveller) object).getBeta(graph.getReferenceFrameBeta())));
+            }
         });
-
-        // TODO temporary during debugging with default spacetime objects
-        for (SpacetimeObject obj : objects) {
-            SpacetimeObjectDetailCard card = new SpacetimeObjectDetailCard(obj);
-
-            objSettingsPnl.add(card, obj.getUUID().toString());
-            detailCards.put(obj, card);
-        }
 
         optionsPanel.add(objSettingsPnl);
 
