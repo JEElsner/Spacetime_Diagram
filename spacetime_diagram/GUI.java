@@ -304,6 +304,10 @@ public class GUI extends JFrame {
             // TODO redundant
             SpacetimeObject object = objectList.getSelectedValue();
 
+            if (object == null) {
+                return;
+            }
+
             nameField.setText(object.getName());
 
             // TODO formatting
