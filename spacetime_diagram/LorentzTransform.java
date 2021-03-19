@@ -60,7 +60,7 @@ public class LorentzTransform {
         }
 
         public double getT(double observerBeta) {
-            return (t - observerBeta * t) * LorentzTransform.lorentz_factor(observerBeta);
+            return (t - observerBeta * x) * LorentzTransform.lorentz_factor(observerBeta);
         }
 
         public void setT(double observerBeta, double observedT) {
