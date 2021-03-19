@@ -104,11 +104,15 @@ public class LorentzTransform {
             return LorentzTransform.speedTransform(beta, observerBeta);
         }
 
-        public void setBeta(double observerBeta, double observedBeta) {
+        public boolean setBeta(double observerBeta, double observedBeta) {
             double beta = getRestBeta(observerBeta, observedBeta);
 
-            if (Math.abs(beta) < 1)
+            if (Math.abs(beta) < 1) {
                 this.beta = beta;
+                return true;
+            }
+
+            return false;
         }
 
         public double getXIntercept(double observerBeta) {
