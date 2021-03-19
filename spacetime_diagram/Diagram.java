@@ -70,6 +70,7 @@ public class Diagram extends Canvas implements ComponentListener {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // Draw x-axis
+        g.setColor(Color.BLACK);
         g.drawLine(-drawingWidth / 2, 0, drawingWidth / 2, 0);
         // Draw y-axis
         g.drawLine(0, 0, 0, drawingHeight);

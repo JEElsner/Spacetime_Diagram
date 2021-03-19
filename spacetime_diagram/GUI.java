@@ -3,9 +3,14 @@ package spacetime_diagram;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.image.BufferedImage;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Hashtable;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -13,9 +18,13 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -53,6 +62,40 @@ public class GUI extends JFrame {
 
         // Set how the GUI closes
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Create Menu Bar
+        JMenuBar menuBar = new JMenuBar();
+        this.setJMenuBar(menuBar);
+
+        JMenu fileMenu = new JMenu("File");
+        fileMenu.setMnemonic('F');
+        menuBar.add(fileMenu);
+
+        JMenuItem exportGraphItem = new JMenuItem("Export Graph as Image");
+        exportGraphItem.setMnemonic('E');
+        fileMenu.add(exportGraphItem);
+
+        exportGraphItem.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+
+            int returnVal = fileChooser.showSaveDialog(this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File saveFile = fileChooser.getSelectedFile();
+
+                BufferedImage img = new BufferedImage(graph.getWidth(), graph.getHeight(), BufferedImage.TYPE_INT_ARGB);
+                Graphics2D graphics = (Graphics2D) img.getGraphics();
+                graphics.setColor(Color.white);
+                graphics.fillRect(0, 0, graph.getWidth(), graph.getHeight());
+
+                graph.paint(graphics);
+                try {
+                    ImageIO.write(img, "png", saveFile);
+                } catch (Exception ex) {
+                    // TODO: handle exception
+                }
+            }
+        });
 
         // Initialize master GUI layout management
         this.setLayout(new GridBagLayout());
