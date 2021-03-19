@@ -229,7 +229,7 @@ public class GUI extends JFrame {
             }
         });
 
-        xLabel.setLabelFor(tField);
+        tLabel.setLabelFor(tField);
         objSettingsPnl.add(tLabel, objSettingsGbc);
         objSettingsGbc.gridx++;
 
@@ -254,7 +254,7 @@ public class GUI extends JFrame {
             }
         });
 
-        xLabel.setLabelFor(betaField);
+        betaLabel.setLabelFor(betaField);
         objSettingsPnl.add(betaLabel, objSettingsGbc);
         objSettingsGbc.gridx++;
 
