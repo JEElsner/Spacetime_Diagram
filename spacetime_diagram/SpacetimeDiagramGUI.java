@@ -42,8 +42,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
@@ -484,35 +482,5 @@ public class SpacetimeDiagramGUI extends JFrame {
 
         // Set minimum size so components don't get crushed
         this.setMinimumSize(this.getSize());
-    }
-
-    /**
-     * Create and run the Spacetime Diagram {@code GUI}
-     * 
-     * @param args Command-line arguments that do not change the behavior of the
-     *             program
-     * @see SpacetimeDiagramGUI
-     * @see Diagram
-     */
-    public static void main(String[] args) {
-
-        // Try to change the skin of the GUI to look like the OS the user is running.
-        // If this fails, the GUI *should* still appear, but it will look like the
-        // cross-platform Java skin.
-        // Printing errors to std err should be fine for this
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
-
-        // Create and show the GUI
-        new SpacetimeDiagramGUI();
     }
 }
