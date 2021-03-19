@@ -1,5 +1,7 @@
 package spacetime_diagram;
 
+import java.util.UUID;
+
 public class LorentzTransform {
     private double c = 3 * 10 ^ 8;
 
@@ -41,6 +43,8 @@ public class LorentzTransform {
 
     public static class SpacetimeObject {
 
+        private UUID uuid;
+
         private String name;
         private double t;
         private double x;
@@ -49,6 +53,8 @@ public class LorentzTransform {
             this.name = name;
             this.t = t;
             this.x = x;
+
+            uuid = UUID.randomUUID();
         }
 
         public String getName() {
@@ -77,6 +83,10 @@ public class LorentzTransform {
 
         public String toString() {
             return name;
+        }
+
+        public UUID getUUID() {
+            return uuid;
         }
 
     }

@@ -1,11 +1,10 @@
 package spacetime_diagram;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.AbstractList;
+import java.awt.CardLayout;
 import java.util.AbstractSequentialList;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +17,6 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ComboBoxModel;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -27,15 +25,14 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
-import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-import spacetime_diagram.LorentzTransform.*;
+import spacetime_diagram.LorentzTransform.SpacetimeObject;
+import spacetime_diagram.LorentzTransform.SpacetimeTraveller;
 
 public class GUI extends JFrame {
     /**
@@ -48,6 +45,8 @@ public class GUI extends JFrame {
     private Diagram graph;
 
     private SpacetimeObjectList objects;
+
+    private HashMap<SpacetimeObject, SpacetimeObjectDetailCard> detailCards;
 
     public GUI() {
         super("Spacetime Diagram");
@@ -67,7 +66,6 @@ public class GUI extends JFrame {
         // Create the sidebar panel
         JPanel optionsPanel = new JPanel();
         JPanel globalOptions = new JPanel();
-        JPanel itemEditor = new JPanel();
 
         // Create the sidebar
         optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.PAGE_AXIS));
@@ -124,6 +122,7 @@ public class GUI extends JFrame {
         objectListPanel.setBorder(BorderFactory.createTitledBorder("Spacetime Objects"));
 
         JList<SpacetimeObject> objectList = new JList<>(objects);
+
         JScrollPane objectListScrollPane = new JScrollPane(objectList);
         objectListScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
@@ -168,6 +167,32 @@ public class GUI extends JFrame {
         objectListPanel.add(removeBtn, listPnlGbc);
 
         optionsPanel.add(objectListPanel);
+
+        JPanel objSettingsPnl = new JPanel();
+        objSettingsPnl.setBorder(BorderFactory.createTitledBorder("Selected Event/Traveller"));
+        objSettingsPnl.setLayout(new CardLayout());
+
+        detailCards = new HashMap<>();
+
+        objectList.addListSelectionListener(e -> {
+
+            CardLayout cl = (CardLayout) objSettingsPnl.getLayout();
+
+            SpacetimeObject selected = objects.get(objectList.getSelectedIndex());
+            detailCards.get(selected).updateText(graph.getReferenceFrameBeta());
+
+            cl.show(objSettingsPnl, selected.getUUID().toString());
+        });
+
+        // TODO temporary during debugging with default spacetime objects
+        for (SpacetimeObject obj : objects) {
+            SpacetimeObjectDetailCard card = new SpacetimeObjectDetailCard(obj);
+
+            objSettingsPnl.add(card, obj.getUUID().toString());
+            detailCards.put(obj, card);
+        }
+
+        optionsPanel.add(objSettingsPnl);
 
         // Add sidebar to window
         this.add(optionsPanel, BorderLayout.LINE_START);
@@ -287,7 +312,8 @@ public class GUI extends JFrame {
         @Override
         public boolean add(SpacetimeObject obj) {
             if (objects.add(obj)) {
-                ListDataEvent e = new ListDataEvent(obj, ListDataEvent.INTERVAL_ADDED, 0, objects.size() - 1);
+                ListDataEvent e = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, objects.size() - 2,
+                        objects.size() - 1);
                 listeners.forEach(l -> l.intervalAdded(e));
 
                 return true;
@@ -301,7 +327,7 @@ public class GUI extends JFrame {
             int i = objects.indexOf(obj);
 
             if (objects.remove(obj)) {
-                ListDataEvent e = new ListDataEvent(obj, ListDataEvent.INTERVAL_REMOVED, i, i);
+                ListDataEvent e = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED, i, i);
                 listeners.forEach(l -> l.intervalRemoved(e));
 
                 return true;
@@ -315,7 +341,7 @@ public class GUI extends JFrame {
             SpacetimeObject o = objects.remove(i);
 
             if (o != null) {
-                ListDataEvent e = new ListDataEvent(o, ListDataEvent.INTERVAL_ADDED, i, i);
+                ListDataEvent e = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED, i, i);
                 listeners.forEach(l -> l.intervalRemoved(e));
             }
 
