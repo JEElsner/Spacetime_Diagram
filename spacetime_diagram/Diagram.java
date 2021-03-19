@@ -106,7 +106,7 @@ public class Diagram extends Canvas {
         // Keep the lines from extending beyond the left and right edges of the graph so
         // everything looks pretty.
         if (Math.abs(startX + dx) > width / 2) {
-            dx = (int) Math.copySign(width / 2 - startX, dx);
+            dx = (int) Math.copySign(width / 2, dx) - startX;
             dt = (int) Math.round(dx / speedInRefFrame);
         }
 
