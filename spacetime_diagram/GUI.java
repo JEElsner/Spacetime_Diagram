@@ -34,21 +34,47 @@ import javax.swing.event.ListDataListener;
 import spacetime_diagram.LorentzTransform.SpacetimeObject;
 import spacetime_diagram.LorentzTransform.SpacetimeTraveller;
 
+/**
+ * A simple GUI for drawing accurate Spacetime diagrams and observing how these
+ * diagrams change when the situation is observed at different speeds.
+ * 
+ * @author Jonathan Elsner
+ */
 public class GUI extends JFrame {
     /**
      *
      */
     private static final long serialVersionUID = -1681071496023255137L;
 
+    /**
+     * Where the spacetime diagram is drawn.
+     * 
+     * @see Diagram
+     */
     private Diagram graph;
 
+    /**
+     * Stores and monitors spacetime travellers (worldlines) and spacetime events.
+     * 
+     * @see SpacetimeObjectListModel
+     * @see SpacetimeObject
+     * @see SpacetimeTraveller
+     */
     private SpacetimeObjectListModel objects;
 
+    /**
+     * Construct the {@code GUI} and its subcomponents
+     * 
+     * @see GUI
+     */
     public GUI() {
+        // Call the super constructor and specify the window name
         super("Spacetime Diagram");
 
+        // Create the list where we store all of the spacetime objects
         objects = new SpacetimeObjectListModel();
 
+        // Initialize the diagram with some preset items for testing
         // objects.add(new SpacetimeTraveller("foo", 0.1, 0, 0));
         // objects.add(new SpacetimeTraveller("bar", -0.6, 0, 50));
         // objects.add(new SpacetimeObject("baz", 50, -50));
@@ -56,7 +82,9 @@ public class GUI extends JFrame {
         // Set how the GUI closes
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Create Menu Bar
+        // ###### Construct the menu bar #######
+        // #region menu_bar
+
         JMenuBar menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);
 
@@ -68,16 +96,21 @@ public class GUI extends JFrame {
         exportGraphItem.setMnemonic('E');
         fileMenu.add(exportGraphItem);
 
+        // Code for saving an image
         exportGraphItem.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
 
             int returnVal = fileChooser.showSaveDialog(this);
 
+            // If the user selects a place to save the image
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File saveFile = fileChooser.getSelectedFile();
 
                 BufferedImage img = new BufferedImage(graph.getWidth(), graph.getHeight(), BufferedImage.TYPE_INT_ARGB);
                 Graphics2D graphics = (Graphics2D) img.getGraphics();
+
+                // Paint the image background white, since the Diagram doesn't do this
+                // Otherwise, the image will come out transparent
                 graphics.setColor(Color.white);
                 graphics.fillRect(0, 0, graph.getWidth(), graph.getHeight());
 
@@ -90,10 +123,17 @@ public class GUI extends JFrame {
             }
         });
 
+        // #endregion menu_bar
+
         // Initialize master GUI layout management
         this.setLayout(new GridBagLayout());
         GridBagConstraints masterGBC = new GridBagConstraints();
         masterGBC.gridx = masterGBC.gridy = 0;
+
+        // ####### Configure Global Options ######
+        // Create GUI controls for settings like the speed of the reference frame of the
+        // Diagram
+        // #region global_options
 
         JPanel globalOptions = new JPanel();
 
@@ -101,6 +141,7 @@ public class GUI extends JFrame {
         globalOptions.setBorder(BorderFactory.createTitledBorder("Reference Frame Speed"));
         globalOptions.setLayout(new BoxLayout(globalOptions, BoxLayout.PAGE_AXIS));
 
+        // Speed slider
         JSlider observerSpeed = new JSlider(-100, 100, 0);
         observerSpeed.setMajorTickSpacing(20);
         observerSpeed.setMinorTickSpacing(10);
@@ -112,6 +153,7 @@ public class GUI extends JFrame {
             graph.repaint();
         });
 
+        // Labels on slider representing fraction of the speed of light
         Hashtable<Integer, JLabel> labelTable = new Hashtable<>();
         for (int i = -100; i <= 100; i += 20) {
             labelTable.put(i, new JLabel("" + (i / 100.0)));
@@ -126,7 +168,12 @@ public class GUI extends JFrame {
         this.add(globalOptions, masterGBC);
         masterGBC.gridy++;
 
-        // Configure object list
+        // #endregion global_options
+
+        // ###### Configure object list ######
+        // The list of spacetime objects and buttons to add and remove them
+        // #region object_list
+
         JPanel objectListPanel = new JPanel();
         objectListPanel.setBorder(BorderFactory.createTitledBorder("Spacetime Objects"));
 
@@ -149,6 +196,7 @@ public class GUI extends JFrame {
         listPnlGbc.weighty = 0;
         listPnlGbc.gridy++;
 
+        // Buttons to add and remove items from the list
         JButton addEventBtn = new JButton("Add Event");
         addEventBtn.addActionListener(e -> {
             objects.add(new SpacetimeObject("New Event", 0, 0));
@@ -168,10 +216,12 @@ public class GUI extends JFrame {
             }
         });
 
+        // Disable remove button when no item is selected
         objectList.addListSelectionListener(e -> {
             removeBtn.setEnabled(objectList.getSelectedIndex() != -1);
         });
 
+        // Add the buttons to the panel
         objectListPanel.add(addEventBtn, listPnlGbc);
         listPnlGbc.gridx++;
 
@@ -180,6 +230,7 @@ public class GUI extends JFrame {
 
         objectListPanel.add(removeBtn, listPnlGbc);
 
+        // Add the object list panel to the GUI
         masterGBC.anchor = GridBagConstraints.CENTER;
         masterGBC.fill = GridBagConstraints.BOTH;
         masterGBC.weightx = masterGBC.weighty = 0.1;
@@ -187,7 +238,12 @@ public class GUI extends JFrame {
         masterGBC.weighty = 0;
         masterGBC.gridy++;
 
-        // Create Object details panel
+        // #endregion object_list
+
+        // ####### Create Object details panel #####
+        // Add components to change settings such as position, time, and speed for the
+        // spacetime objects
+        // #region object_details
 
         JPanel objSettingsPnl = new JPanel();
         objSettingsPnl.setBorder(BorderFactory.createTitledBorder("Selected Event/Traveller"));
@@ -203,6 +259,7 @@ public class GUI extends JFrame {
         JTextField nameField = new JTextField(10);
 
         nameField.setEnabled(false);
+        // Update object and object list when name changes
         nameField.addActionListener(e -> {
             objectList.getSelectedValue().setName(nameField.getText());
             objects.fireChangeEvent(objectList.getSelectedIndex());
@@ -223,6 +280,7 @@ public class GUI extends JFrame {
         JTextField xField = new JTextField(20);
 
         xField.setEnabled(false);
+        // Update object and Diagram when x value changes
         xField.addActionListener(e -> {
             try {
                 double newX = Double.valueOf(xField.getText());
@@ -246,6 +304,7 @@ public class GUI extends JFrame {
         JTextField tField = new JTextField(20);
 
         tField.setEnabled(false);
+        // Update object and Diagram when time changes
         tField.addActionListener(e -> {
             try {
                 double newT = Double.valueOf(tField.getText());
@@ -269,6 +328,7 @@ public class GUI extends JFrame {
         JTextField betaField = new JTextField(20);
 
         betaField.setEnabled(false);
+        // Update object and Diagram when speed changes
         betaField.addActionListener(e -> {
             SpacetimeTraveller traveller = (SpacetimeTraveller) objectList.getSelectedValue();
 
@@ -294,9 +354,11 @@ public class GUI extends JFrame {
         objSettingsGbc.weighty = 1;
         objSettingsPnl.add(Box.createVerticalGlue(), objSettingsGbc);
 
+        // Update the values in the details panel if the object selection changes
         objectList.addListSelectionListener(e -> {
             SpacetimeObject object = objectList.getSelectedValue();
 
+            // Disable panel when no object is selected in the list
             if (object == null) {
                 nameField.setEnabled(false);
                 xField.setEnabled(false);
@@ -317,6 +379,7 @@ public class GUI extends JFrame {
             xField.setText(String.valueOf(object.getX(graph.getReferenceFrameBeta())));
             tField.setText(String.valueOf(object.getT(graph.getReferenceFrameBeta())));
 
+            // Only show the beta field if a traveller that can have a speed is selected
             if (object instanceof SpacetimeTraveller) {
                 betaLabel.setVisible(true);
                 betaField.setVisible(true);
@@ -328,6 +391,8 @@ public class GUI extends JFrame {
             }
         });
 
+        // Update the object details when the reference frame speed changes.
+        // because relativity
         observerSpeed.addChangeListener(e -> {
             // TODO redundant
             SpacetimeObject object = objectList.getSelectedValue();
@@ -342,6 +407,7 @@ public class GUI extends JFrame {
             xField.setText(String.valueOf(object.getX(graph.getReferenceFrameBeta())));
             tField.setText(String.valueOf(object.getT(graph.getReferenceFrameBeta())));
 
+            // Only update beta field if a traveller with a speed is selected
             if (object instanceof SpacetimeTraveller) {
                 betaField.setText(String.valueOf(((SpacetimeTraveller) object).getBeta(graph.getReferenceFrameBeta())));
             }
@@ -354,13 +420,19 @@ public class GUI extends JFrame {
         masterGBC.gridy = 0;
         masterGBC.gridx++;
 
-        // Spacetime graph & panel
+        // #endregion object_details
+
+        // ###### Spacetime graph & panel ######
+        // Configure how the Diagram is shown
+        // #region diagram
 
         JPanel graphPnl = new JPanel();
         graphPnl.setBorder(BorderFactory.createTitledBorder("Graph"));
         graphPnl.setLayout(new GridBagLayout());
 
         graph = new Diagram(objects);
+
+        // repaint the graph whenever the data in the list changes
         objects.addListDataListener(new ListDataListener() {
 
             @Override
@@ -391,8 +463,9 @@ public class GUI extends JFrame {
         masterGBC.gridheight = GridBagConstraints.REMAINDER;
         this.add(graphPnl, masterGBC);
 
-        // Auto-size gui & show it
+        // #endregion diagram
 
+        // Auto-size gui & show it
         this.pack();
         this.setVisible(true);
 
@@ -400,23 +473,33 @@ public class GUI extends JFrame {
         this.setMinimumSize(this.getSize());
     }
 
+    /**
+     * Create and run the Spacetime Diagram {@code GUI}
+     * 
+     * @param args Command-line arguments that do not change the behavior of the
+     *             program
+     * @see GUI
+     * @see Diagram
+     */
     public static void main(String[] args) {
+
+        // Try to change the skin of the GUI to look like the OS the user is running.
+        // If this fails, the GUI *should* still appear, but it will look like the
+        // cross-platform Java skin.
+        // Printing errors to std err should be fine for this
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (InstantiationException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (UnsupportedLookAndFeelException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
+        // Create and show the GUI
         new GUI();
     }
 }
