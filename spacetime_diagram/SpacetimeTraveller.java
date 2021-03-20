@@ -83,6 +83,6 @@ public class SpacetimeTraveller extends SpacetimeEvent {
      */
     public double getXIntercept(double observerBeta) {
         // Solve for the x-intercept
-        return (this.getX(observerBeta) / beta - this.getT(observerBeta)) * getBeta(observerBeta);
+        return getX(observerBeta) - getBeta(observerBeta) * getT(observerBeta);
     }
 }
