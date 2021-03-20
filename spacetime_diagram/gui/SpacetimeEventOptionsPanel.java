@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package spacetime_diagram;
+package spacetime_diagram.gui;
 
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -31,6 +31,10 @@ import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import spacetime_diagram.LorentzTransform;
+import spacetime_diagram.SpacetimeEvent;
+import spacetime_diagram.SpacetimeTraveller;
 
 /**
  * A specialized panel to show the properties of a {@code SpacetimeEvent}

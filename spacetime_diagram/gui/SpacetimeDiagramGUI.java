@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package spacetime_diagram;
+package spacetime_diagram.gui;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -44,6 +44,10 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
+
+import spacetime_diagram.LorentzTransform;
+import spacetime_diagram.SpacetimeEvent;
+import spacetime_diagram.SpacetimeTraveller;
 
 /**
  * A simple GUI for drawing accurate Spacetime diagrams and observing how these

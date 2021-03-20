@@ -21,6 +21,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import spacetime_diagram.gui.Diagram;
+import spacetime_diagram.gui.SpacetimeDiagramGUI;
+
 /**
  * The main class of this program, where the GUI is created and shown.
  * 

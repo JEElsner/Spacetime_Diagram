@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package spacetime_diagram;
+package spacetime_diagram.gui;
 
 import java.util.AbstractSequentialList;
 import java.util.ArrayList;
@@ -24,6 +24,9 @@ import java.util.ListIterator;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
+
+import spacetime_diagram.SpacetimeEvent;
+import spacetime_diagram.SpacetimeTraveller;
 
 /**
  * Stores and tracks changes to the Spacetime objects shown in the diagram. This
