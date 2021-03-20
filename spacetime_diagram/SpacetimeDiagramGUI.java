@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package spacetime_diagram;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -56,6 +57,8 @@ public class SpacetimeDiagramGUI extends JFrame {
      *
      */
     private static final long serialVersionUID = -1681071496023255137L;
+
+    private static final Font MONOSPACE_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
 
     /**
      * Where the spacetime diagram is drawn.
@@ -291,6 +294,7 @@ public class SpacetimeDiagramGUI extends JFrame {
         JTextField xField = new JTextField(20);
 
         xField.setEnabled(false);
+        xField.setFont(MONOSPACE_FONT.deriveFont(Font.PLAIN, xField.getFont().getSize()));
         // Update object and Diagram when x value changes
         xField.addActionListener(e -> {
             try {
@@ -315,6 +319,7 @@ public class SpacetimeDiagramGUI extends JFrame {
         JTextField tField = new JTextField(20);
 
         tField.setEnabled(false);
+        tField.setFont(MONOSPACE_FONT.deriveFont(Font.PLAIN, tField.getFont().getSize()));
         // Update object and Diagram when time changes
         tField.addActionListener(e -> {
             try {
@@ -339,6 +344,7 @@ public class SpacetimeDiagramGUI extends JFrame {
         JTextField betaField = new JTextField(20);
 
         betaField.setEnabled(false);
+        betaField.setFont(MONOSPACE_FONT.deriveFont(Font.PLAIN, betaField.getFont().getSize()));
         // Update object and Diagram when speed changes
         betaField.addActionListener(e -> {
             SpacetimeTraveller traveller = (SpacetimeTraveller) objectList.getSelectedValue();
