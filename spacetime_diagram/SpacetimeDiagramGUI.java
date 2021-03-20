@@ -43,8 +43,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 
 /**
  * A simple GUI for drawing accurate Spacetime diagrams and observing how these
@@ -157,6 +155,8 @@ public class SpacetimeDiagramGUI extends JFrame {
 
         // Speed slider
         JSlider observerSpeed = new JSlider(-100, 100, 0);
+        observerSpeed.setToolTipText("Change the speed of the observer drawing the spacetime diagram");
+
         observerSpeed.setMajorTickSpacing(20);
         observerSpeed.setMinorTickSpacing(10);
         observerSpeed.setPaintTicks(true);
@@ -212,16 +212,19 @@ public class SpacetimeDiagramGUI extends JFrame {
 
         // Buttons to add and remove items from the list
         JButton addEventBtn = new JButton("Add Event");
+        addEventBtn.setToolTipText("Add an event to the spacetime diagram");
         addEventBtn.addActionListener(e -> {
             objects.add(new SpacetimeEvent("New Event", 0, 0));
         });
 
         JButton addTravellerBtn = new JButton("Add traveller");
+        addEventBtn.setToolTipText("Add a worldline to the spacetime diagram");
         addTravellerBtn.addActionListener(e -> {
             objects.add(new SpacetimeTraveller("New Traveller", 0, 0, 0));
         });
 
         JButton removeBtn = new JButton("Remove");
+        removeBtn.setToolTipText("Remove the selected element");
         removeBtn.setEnabled(false);
         removeBtn.addActionListener(e -> {
             int i = objectList.getSelectedIndex();
@@ -273,6 +276,7 @@ public class SpacetimeDiagramGUI extends JFrame {
         JTextField nameField = new JTextField(10);
 
         nameField.setEnabled(false);
+        nameField.setToolTipText("Rename the selected element");
         // Update object and object list when name changes
         nameField.addActionListener(e -> {
             objectList.getSelectedValue().setName(nameField.getText());
@@ -294,6 +298,7 @@ public class SpacetimeDiagramGUI extends JFrame {
         JTextField xField = new JTextField(20);
 
         xField.setEnabled(false);
+        xField.setToolTipText("Set the x-coordinate of the selected element");
         xField.setFont(MONOSPACE_FONT.deriveFont(Font.PLAIN, xField.getFont().getSize()));
         // Update object and Diagram when x value changes
         xField.addActionListener(e -> {
@@ -319,6 +324,7 @@ public class SpacetimeDiagramGUI extends JFrame {
         JTextField tField = new JTextField(20);
 
         tField.setEnabled(false);
+        tField.setToolTipText("Set the t-coordinate of the selected element");
         tField.setFont(MONOSPACE_FONT.deriveFont(Font.PLAIN, tField.getFont().getSize()));
         // Update object and Diagram when time changes
         tField.addActionListener(e -> {
@@ -344,6 +350,7 @@ public class SpacetimeDiagramGUI extends JFrame {
         JTextField betaField = new JTextField(20);
 
         betaField.setEnabled(false);
+        betaField.setToolTipText("Set the beta value for the selected worldline");
         betaField.setFont(MONOSPACE_FONT.deriveFont(Font.PLAIN, betaField.getFont().getSize()));
         // Update object and Diagram when speed changes
         betaField.addActionListener(e -> {
