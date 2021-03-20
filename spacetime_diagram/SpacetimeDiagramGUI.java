@@ -31,6 +31,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
@@ -41,6 +42,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
@@ -74,6 +76,12 @@ public class SpacetimeDiagramGUI extends JFrame {
      * @see SpacetimeTraveller
      */
     private SpacetimeEventListModel objects;
+
+    /**
+     * The unit conversion from the internal units to calculate special relativity,
+     * to the units that are displayed to the user.
+     */
+    private double speedOfLight = 1;
 
     /**
      * Construct the {@code GUI} and its subcomponents
@@ -139,6 +147,29 @@ public class SpacetimeDiagramGUI extends JFrame {
         JMenu optionsMenu = new JMenu("Options");
         optionsMenu.setMnemonic('O');
         menuBar.add(optionsMenu);
+
+        ButtonGroup cBtns = new ButtonGroup();
+
+        JRadioButtonMenuItem exactCMenuOption = new JRadioButtonMenuItem("c = 299,792,458 m/s");
+        exactCMenuOption.setFont(MONOSPACE_FONT.deriveFont(Font.PLAIN, exactCMenuOption.getFont().getSize()));
+        exactCMenuOption.addActionListener(e -> speedOfLight = LorentzTransform.EXACT_C);
+        cBtns.add(exactCMenuOption);
+        optionsMenu.add(exactCMenuOption);
+
+        JRadioButtonMenuItem approxCMenuOption = new JRadioButtonMenuItem("c = 3,000,000,000 m/s");
+        approxCMenuOption.setFont(MONOSPACE_FONT.deriveFont(Font.PLAIN, exactCMenuOption.getFont().getSize()));
+        approxCMenuOption.addActionListener(e -> speedOfLight = LorentzTransform.APPROXIMATE_C);
+        cBtns.add(approxCMenuOption);
+        optionsMenu.add(approxCMenuOption);
+
+        JRadioButtonMenuItem c1MenuOption = new JRadioButtonMenuItem("c = 1 s/s");
+        c1MenuOption.setFont(MONOSPACE_FONT.deriveFont(Font.PLAIN, exactCMenuOption.getFont().getSize()));
+        c1MenuOption.addActionListener(e -> speedOfLight = LorentzTransform.C_1);
+        c1MenuOption.setSelected(true);
+        cBtns.add(c1MenuOption);
+        optionsMenu.add(c1MenuOption);
+
+        optionsMenu.addSeparator();
 
         JCheckBoxMenuItem drawLightConeCheckbox = new JCheckBoxMenuItem("Draw light cone from origin", true);
         drawLightConeCheckbox.setMnemonic('l');
