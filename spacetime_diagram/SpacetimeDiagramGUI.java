@@ -32,6 +32,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -134,6 +135,17 @@ public class SpacetimeDiagramGUI extends JFrame {
                 }
             }
         });
+
+        JMenu optionsMenu = new JMenu("Options");
+        optionsMenu.setMnemonic('O');
+        menuBar.add(optionsMenu);
+
+        JCheckBoxMenuItem drawLightConeCheckbox = new JCheckBoxMenuItem("Draw light cone from origin", true);
+        drawLightConeCheckbox.setMnemonic('l');
+        drawLightConeCheckbox.addActionListener(e -> {
+            graph.setDrawLightCone(drawLightConeCheckbox.getState());
+        });
+        optionsMenu.add(drawLightConeCheckbox);
 
         // #endregion menu_bar
 

@@ -69,6 +69,11 @@ public class Diagram extends Canvas implements ComponentListener, ListDataListen
     private int bottomPadding = 10;
     private int topPadding = 10;
 
+    /**
+     * Whether or not to draw a light cone extending from the origin
+     */
+    private boolean drawLightCone = true;
+
     // How the lines are painted
     private Stroke lineStroke = new BasicStroke(3);
 
@@ -107,6 +112,27 @@ public class Diagram extends Canvas implements ComponentListener, ListDataListen
     }
 
     /**
+     * Whether a light cone is drawn from the origin
+     * 
+     * @return {@code true} if a light cone is drawn, {@code false} otherwise
+     */
+    public boolean isDrawLightCone() {
+        return drawLightCone;
+    }
+
+    /**
+     * Set whether a light cone is drawn from the origin. If true, a light cone will
+     * be drawn.
+     * 
+     * @param drawLightCone if {@code true} a light cone will be drawn, if
+     *                      {@code false} a light cone will not be drawn
+     */
+    public void setDrawLightCone(boolean drawLightCone) {
+        this.drawLightCone = drawLightCone;
+        repaint();
+    }
+
+    /**
      * Draw the Spacetime diagram with the specified Graphics instance.
      * 
      * @param g the Graphics2D instance with which to draw the spacetime diagram
@@ -134,9 +160,11 @@ public class Diagram extends Canvas implements ComponentListener, ListDataListen
         g.drawLine(0, 0, 0, drawingHeight);
 
         // Draw light-cone from origin
-        g.setColor(Color.yellow);
-        drawWorldLine(g2d, 0, -1);
-        drawWorldLine(g2d, 0, 1);
+        if (drawLightCone) {
+            g.setColor(Color.yellow);
+            drawWorldLine(g2d, 0, -1);
+            drawWorldLine(g2d, 0, 1);
+        }
 
         // Draw all of the SpacetimeObjects
         int color = 0;
