@@ -450,24 +450,7 @@ public class SpacetimeDiagramGUI extends JFrame {
         graph = new Diagram(objects);
 
         // repaint the graph whenever the data in the list changes
-        objects.addListDataListener(new ListDataListener() {
-
-            @Override
-            public void intervalAdded(ListDataEvent e) {
-                graph.repaint();
-            }
-
-            @Override
-            public void intervalRemoved(ListDataEvent e) {
-                graph.repaint();
-            }
-
-            @Override
-            public void contentsChanged(ListDataEvent e) {
-                graph.repaint();
-            }
-
-        });
+        objects.addListDataListener(graph);
 
         GridBagConstraints graphGBC = new GridBagConstraints();
         graphGBC.fill = GridBagConstraints.BOTH;

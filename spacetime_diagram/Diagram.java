@@ -22,6 +22,10 @@ import java.awt.Graphics2D;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.geom.AffineTransform;
+
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+
 import java.awt.*;
 
 /**
@@ -36,7 +40,7 @@ import java.awt.*;
  * @see SpacetimeDiagramGUI
  * @see LorentzTransform
  */
-public class Diagram extends Canvas implements ComponentListener {
+public class Diagram extends Canvas implements ComponentListener, ListDataListener {
 
     /**
      *
@@ -222,5 +226,20 @@ public class Diagram extends Canvas implements ComponentListener {
 
     @Override
     public void componentHidden(ComponentEvent e) {
+    }
+
+    @Override
+    public void intervalAdded(ListDataEvent e) {
+        repaint();
+    }
+
+    @Override
+    public void intervalRemoved(ListDataEvent e) {
+        repaint();
+    }
+
+    @Override
+    public void contentsChanged(ListDataEvent e) {
+        repaint();
     }
 }
