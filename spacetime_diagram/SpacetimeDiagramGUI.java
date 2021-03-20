@@ -29,7 +29,6 @@ import java.util.Hashtable;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -45,7 +44,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
-import javax.swing.JTextField;
 
 /**
  * A simple GUI for drawing accurate Spacetime diagrams and observing how these
@@ -59,7 +57,7 @@ public class SpacetimeDiagramGUI extends JFrame {
      */
     private static final long serialVersionUID = -1681071496023255137L;
 
-    private static final Font MONOSPACE_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
+    public static final Font MONOSPACE_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
 
     /**
      * Where the spacetime diagram is drawn.
@@ -304,179 +302,14 @@ public class SpacetimeDiagramGUI extends JFrame {
         // Add components to change settings such as position, time, and speed for the
         // spacetime objects
         // #region object_details
-
-        JPanel objSettingsPnl = new JPanel();
-        objSettingsPnl.setBorder(BorderFactory.createTitledBorder("Selected Event/Traveller"));
-        objSettingsPnl.setLayout(new GridBagLayout());
-
-        GridBagConstraints objSettingsGbc = new GridBagConstraints();
-        objSettingsGbc.gridx = objSettingsGbc.gridy = 0;
-        objSettingsGbc.anchor = GridBagConstraints.FIRST_LINE_START;
-        objSettingsGbc.fill = GridBagConstraints.HORIZONTAL;
-        objSettingsGbc.insets = new Insets(2, 2, 2, 2);
-
-        JLabel nameLabel = new JLabel("Name");
-        JTextField nameField = new JTextField(10);
-
-        nameField.setEnabled(false);
-        nameField.setToolTipText("Rename the selected element");
-        // Update object and object list when name changes
-        nameField.addActionListener(e -> {
-            objectList.getSelectedValue().setName(nameField.getText());
-            objects.fireChangeEvent(objectList.getSelectedIndex());
-        });
-
-        nameLabel.setLabelFor(nameField);
-        objSettingsPnl.add(nameLabel, objSettingsGbc);
-        objSettingsGbc.gridx++;
-
-        objSettingsGbc.weightx = 1;
-        objSettingsPnl.add(nameField, objSettingsGbc);
-        objSettingsGbc.weightx = 0;
-        objSettingsGbc.fill = GridBagConstraints.NONE;
-        objSettingsGbc.gridx = 0;
-        objSettingsGbc.gridy++;
-
-        JLabel xLabel = new JLabel("x-Position");
-        JTextField xField = new JTextField(20);
-
-        xField.setEnabled(false);
-        xField.setToolTipText("Set the x-coordinate of the selected element");
-        xField.setFont(MONOSPACE_FONT.deriveFont(Font.PLAIN, xField.getFont().getSize()));
-        // Update object and Diagram when x value changes
-        xField.addActionListener(e -> {
-            try {
-                double newX = Double.valueOf(xField.getText());
-                objectList.getSelectedValue().setX(graph.getReferenceFrameBeta(), newX);
-
-                graph.repaint();
-            } catch (NumberFormatException ex) {
-                xField.setText("" + objectList.getSelectedValue().getX(graph.getReferenceFrameBeta()));
-            }
-        });
-
-        xLabel.setLabelFor(xField);
-        objSettingsPnl.add(xLabel, objSettingsGbc);
-        objSettingsGbc.gridx++;
-
-        objSettingsPnl.add(xField, objSettingsGbc);
-        objSettingsGbc.gridx = 0;
-        objSettingsGbc.gridy++;
-
-        JLabel tLabel = new JLabel("Time");
-        JTextField tField = new JTextField(20);
-
-        tField.setEnabled(false);
-        tField.setToolTipText("Set the t-coordinate of the selected element");
-        tField.setFont(MONOSPACE_FONT.deriveFont(Font.PLAIN, tField.getFont().getSize()));
-        // Update object and Diagram when time changes
-        tField.addActionListener(e -> {
-            try {
-                double newT = Double.valueOf(tField.getText());
-                objectList.getSelectedValue().setT(graph.getReferenceFrameBeta(), newT);
-
-                graph.repaint();
-            } catch (NumberFormatException ex) {
-                tField.setText("" + objectList.getSelectedValue().getT(graph.getReferenceFrameBeta()));
-            }
-        });
-
-        tLabel.setLabelFor(tField);
-        objSettingsPnl.add(tLabel, objSettingsGbc);
-        objSettingsGbc.gridx++;
-
-        objSettingsPnl.add(tField, objSettingsGbc);
-        objSettingsGbc.gridx = 0;
-        objSettingsGbc.gridy++;
-
-        JLabel betaLabel = new JLabel("Beta");
-        JTextField betaField = new JTextField(20);
-
-        betaField.setEnabled(false);
-        betaField.setToolTipText("Set the beta value for the selected worldline");
-        betaField.setFont(MONOSPACE_FONT.deriveFont(Font.PLAIN, betaField.getFont().getSize()));
-        // Update object and Diagram when speed changes
-        betaField.addActionListener(e -> {
-            SpacetimeTraveller traveller = (SpacetimeTraveller) objectList.getSelectedValue();
-
-            try {
-                double newBeta = Double.valueOf(betaField.getText());
-                betaField.setText("" + traveller.setBeta(graph.getReferenceFrameBeta(), newBeta));
-
-                graph.repaint();
-            } catch (NumberFormatException ex) {
-                betaField.setText("" + traveller.getBeta(graph.getReferenceFrameBeta()));
-            }
-        });
-
-        betaLabel.setLabelFor(betaField);
-        objSettingsPnl.add(betaLabel, objSettingsGbc);
-        objSettingsGbc.gridx++;
-
-        objSettingsPnl.add(betaField, objSettingsGbc);
-        objSettingsGbc.gridx = 0;
-        objSettingsGbc.gridy++;
-
-        objSettingsGbc.fill = GridBagConstraints.VERTICAL;
-        objSettingsGbc.weighty = 1;
-        objSettingsPnl.add(Box.createVerticalGlue(), objSettingsGbc);
-
-        // Update the values in the details panel if the object selection changes
-        objectList.addListSelectionListener(e -> {
-            SpacetimeEvent object = objectList.getSelectedValue();
-
-            // Disable panel when no object is selected in the list
-            if (object == null) {
-                nameField.setEnabled(false);
-                xField.setEnabled(false);
-                tField.setEnabled(false);
-                betaField.setEnabled(false);
-
-                return;
+        SpacetimeEventOptionsPanel objSettingsPnl = new SpacetimeEventOptionsPanel();
+        observerSpeed.addChangeListener(evt -> objSettingsPnl.setReferenceFrameBeta(observerSpeed.getValue() / 100));
+        objectList.addListSelectionListener(evt -> objSettingsPnl.setCurrentEvent(objectList.getSelectedValue()));
+        objSettingsPnl.addActionListener(evt -> {
+            if (evt.getActionCommand() == "name") {
+                objects.fireChangeEvent(objectList.getSelectedValue());
             } else {
-                nameField.setEnabled(true);
-                xField.setEnabled(true);
-                tField.setEnabled(true);
-                betaField.setEnabled(true);
-            }
-
-            nameField.setText(object.getName());
-
-            // TODO formatting
-            xField.setText(String.valueOf(object.getX(graph.getReferenceFrameBeta())));
-            tField.setText(String.valueOf(object.getT(graph.getReferenceFrameBeta())));
-
-            // Only show the beta field if a traveller that can have a speed is selected
-            if (object instanceof SpacetimeTraveller) {
-                betaLabel.setVisible(true);
-                betaField.setVisible(true);
-
-                betaField.setText(String.valueOf(((SpacetimeTraveller) object).getBeta(graph.getReferenceFrameBeta())));
-            } else {
-                betaLabel.setVisible(false);
-                betaField.setVisible(false);
-            }
-        });
-
-        // Update the object details when the reference frame speed changes.
-        // because relativity
-        observerSpeed.addChangeListener(e -> {
-            // TODO redundant
-            SpacetimeEvent object = objectList.getSelectedValue();
-
-            if (object == null) {
-                return;
-            }
-
-            nameField.setText(object.getName());
-
-            // TODO formatting
-            xField.setText(String.valueOf(object.getX(graph.getReferenceFrameBeta())));
-            tField.setText(String.valueOf(object.getT(graph.getReferenceFrameBeta())));
-
-            // Only update beta field if a traveller with a speed is selected
-            if (object instanceof SpacetimeTraveller) {
-                betaField.setText(String.valueOf(((SpacetimeTraveller) object).getBeta(graph.getReferenceFrameBeta())));
+                graph.repaint();
             }
         });
 
