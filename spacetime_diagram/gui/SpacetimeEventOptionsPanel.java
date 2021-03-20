@@ -226,6 +226,10 @@ public class SpacetimeEventOptionsPanel extends JPanel {
      * reference frame speed
      */
     private void updateValues() {
+        if (currentEvent == null) {
+            return;
+        }
+
         nameField.setText(currentEvent.getName());
 
         // TODO formatting
