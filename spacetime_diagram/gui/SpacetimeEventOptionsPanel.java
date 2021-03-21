@@ -72,6 +72,12 @@ public class SpacetimeEventOptionsPanel extends JPanel {
     private double referenceFrameBeta;
 
     /**
+     * The conversion of distance from light-seconds to whatever unit is being
+     * displayed
+     */
+    private double distanceConversion;
+
+    /**
      * The field storing the current event's name
      */
     private JTextField nameField;
@@ -101,6 +107,9 @@ public class SpacetimeEventOptionsPanel extends JPanel {
      * Constructs a SpacetimeEventOptionsPanel
      */
     public SpacetimeEventOptionsPanel() {
+
+        distanceConversion = LorentzTransform.C_1;
+
         // Create array for ActionListeners
         actionListeners = new ArrayList<>();
 
@@ -144,7 +153,7 @@ public class SpacetimeEventOptionsPanel extends JPanel {
         xField.setFont(SpacetimeDiagramGUI.MONOSPACE_FONT.deriveFont(Font.PLAIN, xField.getFont().getSize()));
         xField.addActionListener(e -> {
             try {
-                double newX = Double.valueOf(xField.getText());
+                double newX = Double.valueOf(xField.getText()) / distanceConversion;
                 currentEvent.setX(referenceFrameBeta, newX);
 
                 ActionEvent lEvt = new ActionEvent(this, e.getID(), "x");
@@ -222,6 +231,29 @@ public class SpacetimeEventOptionsPanel extends JPanel {
     }
 
     /**
+     * Returns the conversion factor between light-seconds and the displayed
+     * distance units
+     * 
+     * @return the conversion factor between light-seconds and the displayed
+     *         distance units
+     */
+    public double getDistanceConversion() {
+        return distanceConversion;
+    }
+
+    /**
+     * Set the conversion factor for distance from light seconds to an arbitrary
+     * unit
+     * 
+     * @param distanceConversion The conversion factor between light seconds and the
+     *                           displayed unit of distance
+     */
+    public void setDistanceConversion(double distanceConversion) {
+        this.distanceConversion = distanceConversion;
+        updateValues();
+    }
+
+    /**
      * Make sure that the text in the fields is accurate for the current event and
      * reference frame speed
      */
@@ -233,7 +265,7 @@ public class SpacetimeEventOptionsPanel extends JPanel {
         nameField.setText(currentEvent.getName());
 
         // TODO formatting
-        xField.setText(String.valueOf(currentEvent.getX(referenceFrameBeta)));
+        xField.setText(String.valueOf(currentEvent.getX(referenceFrameBeta) * distanceConversion));
         tField.setText(String.valueOf(currentEvent.getT(referenceFrameBeta)));
 
         // Only update beta field if a traveller with a speed is selected

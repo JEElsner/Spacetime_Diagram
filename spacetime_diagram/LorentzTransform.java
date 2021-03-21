@@ -32,7 +32,7 @@ public class LorentzTransform {
     // it in one place, and make everything work.
     public static final double C_1 = 1;
     public static final double EXACT_C = 299_792_458;
-    public static final double APPROXIMATE_C = 3 * 10 ^ 8;
+    public static final double APPROXIMATE_C = 3E8;
 
     // The current value of c we are using in our calculations
     private static double c = C_1;

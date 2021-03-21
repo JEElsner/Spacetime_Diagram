@@ -85,6 +85,8 @@ public class SpacetimeDiagramGUI extends JFrame {
      */
     private double speedOfLight = 1;
 
+    private SpacetimeEventOptionsPanel objSettingsPnl;
+
     /**
      * Construct the {@code GUI} and its subcomponents
      * 
@@ -154,19 +156,28 @@ public class SpacetimeDiagramGUI extends JFrame {
 
         JRadioButtonMenuItem exactCMenuOption = new JRadioButtonMenuItem("c = 299,792,458 m/s");
         exactCMenuOption.setFont(MONOSPACE_FONT.deriveFont(Font.PLAIN, exactCMenuOption.getFont().getSize()));
-        exactCMenuOption.addActionListener(e -> speedOfLight = LorentzTransform.EXACT_C);
+        exactCMenuOption.addActionListener(e -> {
+            speedOfLight = LorentzTransform.EXACT_C;
+            objSettingsPnl.setDistanceConversion(speedOfLight);
+        });
         cBtns.add(exactCMenuOption);
         optionsMenu.add(exactCMenuOption);
 
         JRadioButtonMenuItem approxCMenuOption = new JRadioButtonMenuItem("c = 3,000,000,000 m/s");
         approxCMenuOption.setFont(MONOSPACE_FONT.deriveFont(Font.PLAIN, exactCMenuOption.getFont().getSize()));
-        approxCMenuOption.addActionListener(e -> speedOfLight = LorentzTransform.APPROXIMATE_C);
+        approxCMenuOption.addActionListener(e -> {
+            speedOfLight = LorentzTransform.APPROXIMATE_C;
+            objSettingsPnl.setDistanceConversion(speedOfLight);
+        });
         cBtns.add(approxCMenuOption);
         optionsMenu.add(approxCMenuOption);
 
         JRadioButtonMenuItem c1MenuOption = new JRadioButtonMenuItem("c = 1 s/s");
         c1MenuOption.setFont(MONOSPACE_FONT.deriveFont(Font.PLAIN, exactCMenuOption.getFont().getSize()));
-        c1MenuOption.addActionListener(e -> speedOfLight = LorentzTransform.C_1);
+        c1MenuOption.addActionListener(e -> {
+            speedOfLight = LorentzTransform.C_1;
+            objSettingsPnl.setDistanceConversion(speedOfLight);
+        });
         c1MenuOption.setSelected(true);
         cBtns.add(c1MenuOption);
         optionsMenu.add(c1MenuOption);
@@ -302,11 +313,7 @@ public class SpacetimeDiagramGUI extends JFrame {
 
         // #endregion object_list
 
-        // ####### Create Object details panel #####
-        // Add components to change settings such as position, time, and speed for the
-        // spacetime objects
-        // #region object_details
-        SpacetimeEventOptionsPanel objSettingsPnl = new SpacetimeEventOptionsPanel();
+        objSettingsPnl = new SpacetimeEventOptionsPanel();
         observerSpeed.addChangeListener(evt -> objSettingsPnl.setReferenceFrameBeta(observerSpeed.getValue() / 100.0));
         objectList.addListSelectionListener(evt -> objSettingsPnl.setCurrentEvent(objectList.getSelectedValue()));
         objSettingsPnl.addActionListener(evt -> {
@@ -358,5 +365,14 @@ public class SpacetimeDiagramGUI extends JFrame {
 
         // Set minimum size so components don't get crushed
         this.setMinimumSize(this.getSize());
+    }
+
+    /**
+     * Returns the speed of light used in the GUI
+     * 
+     * @return the speed of light used in the GUI
+     */
+    public double getSpeedOfLight() {
+        return speedOfLight;
     }
 }
