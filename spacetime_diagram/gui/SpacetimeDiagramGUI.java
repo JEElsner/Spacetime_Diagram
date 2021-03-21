@@ -307,7 +307,7 @@ public class SpacetimeDiagramGUI extends JFrame {
         // spacetime objects
         // #region object_details
         SpacetimeEventOptionsPanel objSettingsPnl = new SpacetimeEventOptionsPanel();
-        observerSpeed.addChangeListener(evt -> objSettingsPnl.setReferenceFrameBeta(observerSpeed.getValue() / 100));
+        observerSpeed.addChangeListener(evt -> objSettingsPnl.setReferenceFrameBeta(observerSpeed.getValue() / 100.0));
         objectList.addListSelectionListener(evt -> objSettingsPnl.setCurrentEvent(objectList.getSelectedValue()));
         objSettingsPnl.addActionListener(evt -> {
             if (evt.getActionCommand() == "name") {
