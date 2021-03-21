@@ -20,7 +20,6 @@ package spacetime_diagram.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -32,7 +31,6 @@ import java.util.Hashtable;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -45,11 +43,11 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
+import javax.swing.JTextField;
 
 import spacetime_diagram.LorentzTransform;
 import spacetime_diagram.SpacetimeEvent;
@@ -234,11 +232,22 @@ public class SpacetimeDiagramGUI extends JFrame {
         // Diagram
         // #region global_options
 
-        JPanel globalOptions = new JPanel();
+        JPanel globalOptions = new JPanel(new GridBagLayout());
 
         // Configure top panel in sidebar
         globalOptions.setBorder(BorderFactory.createTitledBorder("Reference Frame Speed"));
-        globalOptions.setLayout(new BoxLayout(globalOptions, BoxLayout.PAGE_AXIS));
+
+        GridBagConstraints globalOpsGBC = new GridBagConstraints();
+        globalOpsGBC.gridx = globalOpsGBC.gridy = 0;
+        globalOpsGBC.weightx = 0.2;
+        globalOpsGBC.fill = GridBagConstraints.HORIZONTAL;
+
+        JTextField observerBetaField = new JTextField("0.000");
+        observerBetaField.setToolTipText("Change the speed of the observer drawing the spacetime diagram");
+        observerBetaField.setFont(MONOSPACE_FONT.deriveFont(Font.PLAIN, observerBetaField.getFont().getSize()));
+        globalOptions.add(observerBetaField, globalOpsGBC);
+        globalOpsGBC.gridx++;
+        globalOpsGBC.weightx = 0.8;
 
         // Speed slider
         JSlider observerSpeed = new JSlider(-100, 100, 0);
@@ -248,10 +257,27 @@ public class SpacetimeDiagramGUI extends JFrame {
         observerSpeed.setMinorTickSpacing(10);
         observerSpeed.setPaintTicks(true);
         observerSpeed.setPaintLabels(true);
-        observerSpeed.setSnapToTicks(true);
+        // observerSpeed.setSnapToTicks(true);
         observerSpeed.addChangeListener(e -> {
+            observerBetaField.setText(String.valueOf(observerSpeed.getValue() / 100.0));
             graph.setReferenceFrameBeta(((JSlider) e.getSource()).getValue() / 100.0);
             graph.repaint();
+        });
+
+        observerBetaField.addActionListener(evt -> {
+            try {
+                double newValue = Double.valueOf(observerBetaField.getText());
+
+                if (Math.abs(newValue) <= 1) {
+                    observerSpeed.setValue((int) (newValue * 100));
+                    graph.setReferenceFrameBeta(newValue);
+                    repaint();
+                } else {
+                    observerBetaField.setText(String.valueOf(observerSpeed.getValue() / 100.0));
+                }
+            } catch (NumberFormatException ex) {
+                observerBetaField.setText(String.valueOf(observerSpeed.getValue() / 100.0));
+            }
         });
 
         // Labels on slider representing fraction of the speed of light
@@ -261,7 +287,7 @@ public class SpacetimeDiagramGUI extends JFrame {
         }
         observerSpeed.setLabelTable(labelTable);
 
-        globalOptions.add(observerSpeed);
+        globalOptions.add(observerSpeed, globalOpsGBC);
 
         masterGBC.anchor = GridBagConstraints.PAGE_START;
         masterGBC.fill = GridBagConstraints.HORIZONTAL;
