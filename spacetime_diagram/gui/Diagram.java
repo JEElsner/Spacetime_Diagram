@@ -76,7 +76,7 @@ public class Diagram extends Canvas implements ComponentListener, ListDataListen
     /**
      * Whether or not to draw a light cone extending from the origin
      */
-    private boolean drawLightCone = true;
+    private boolean drawLightCone = false;
 
     // How the lines are painted
     private Stroke lineStroke = new BasicStroke(3);
@@ -143,6 +143,7 @@ public class Diagram extends Canvas implements ComponentListener, ListDataListen
      */
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
+        Font font = g2d.getFont();
         AffineTransform transform = g2d.getTransform();
 
         // Flip y-axis so this behaves like "normal" cartesian coordinates
@@ -153,6 +154,7 @@ public class Diagram extends Canvas implements ComponentListener, ListDataListen
 
         // Apply transform
         g2d.transform(transform);
+        g2d.setFont(font.deriveFont(AffineTransform.getScaleInstance(1, -1)));
 
         g2d.setStroke(lineStroke);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -173,6 +175,10 @@ public class Diagram extends Canvas implements ComponentListener, ListDataListen
         // Draw all of the SpacetimeObjects
         int color = 0;
         for (SpacetimeEvent obj : objects) {
+            int x = (int) Math.round(obj.getX(referenceFrameBeta) * pixelsPerUnit);
+            int t = (int) Math.round(obj.getT(referenceFrameBeta) * pixelsPerUnit);
+            int radius = 5;
+
             g2d.setColor(lineColors[(color++ % lineColors.length)]);
 
             // Draw a worldline if the object moves
@@ -185,13 +191,11 @@ public class Diagram extends Canvas implements ComponentListener, ListDataListen
 
                 drawWorldLine(g2d, travellerIntercept, travellerBeta);
             } else { // Draw a dot if the object is an event
-                int radius = 5;
-
-                int x = (int) Math.round(obj.getX(referenceFrameBeta) * pixelsPerUnit);
-                int t = (int) Math.round(obj.getT(referenceFrameBeta) * pixelsPerUnit);
-
                 g2d.fillOval(x - radius, t - radius, radius * 2, radius * 2);
             }
+
+            g2d.setColor(Color.black);
+            g2d.drawString(obj.getName(), x + (int) (radius * 1.1), t + (int) (radius * 1.1));
         }
     }
 

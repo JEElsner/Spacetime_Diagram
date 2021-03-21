@@ -184,7 +184,7 @@ public class SpacetimeDiagramGUI extends JFrame {
 
         optionsMenu.addSeparator();
 
-        JCheckBoxMenuItem drawLightConeCheckbox = new JCheckBoxMenuItem("Draw light cone from origin", true);
+        JCheckBoxMenuItem drawLightConeCheckbox = new JCheckBoxMenuItem("Draw light cone from origin", false);
         drawLightConeCheckbox.setMnemonic('l');
         drawLightConeCheckbox.addActionListener(e -> {
             graph.setDrawLightCone(drawLightConeCheckbox.getState());
