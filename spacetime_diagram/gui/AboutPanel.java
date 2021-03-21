@@ -17,24 +17,23 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package spacetime_diagram.gui;
 
+import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.awt.Color;
-import java.awt.Desktop;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-
 /**
- * Thanks to this post for how to create hyperlink-like buttons in a Swing:
- * {@link https://stackoverflow.com/questions/527719/how-to-add-hyperlink-in-jlabel}
+ * A simple panel listing information about the creation of this application
+ * 
+ * @author Jonathan Elsner
  */
 public class AboutPanel extends JPanel {
     /**
@@ -56,6 +55,7 @@ public class AboutPanel extends JPanel {
         JButton copyrightBtn = constructHyperlinkBtn("GPL-3.0 License",
                 "https://github.com/JEElsner/Spacetime_Diagram/blob/main/LICENSE");
 
+        // A secret! shhhh!
         String chars = new String(new int[] { 104, 116, 116, 112, 115, 58, 47, 47, 121, 111, 117, 116, 117, 46, 98, 101,
                 47, 100, 81, 119, 52, 119, 57, 87, 103, 88, 99, 81 }, 0, 28);
         JButton inspirationBtn = constructHyperlinkBtn("Rick", chars);
@@ -131,6 +131,17 @@ public class AboutPanel extends JPanel {
         }
     }
 
+    /**
+     * Construct a button that acts like a hyperlink to a webpage.
+     * 
+     * Thanks to this post for how to create hyperlink-like buttons in a Swing:
+     * {@link https://stackoverflow.com/questions/527719/how-to-add-hyperlink-in-jlabel}
+     * 
+     * @param text the text to display on the button
+     * @param the  location to hyperlink
+     * 
+     * @return a {@code JButton} that behaves like a hyperlink
+     */
     private JButton constructHyperlinkBtn(String text, URI uri) {
         JButton btn = new JButton(text);
         btn.setHorizontalAlignment(SwingConstants.LEFT);
@@ -146,6 +157,15 @@ public class AboutPanel extends JPanel {
         return btn;
     }
 
+    /**
+     * Creates a button that acts like a hyperlink to a webpage.
+     * 
+     * @param text the text to display on the button
+     * @param uri  the string representation of the location to hyperlink
+     * @return a {@code JButton} that behaves like a hyperlink
+     * 
+     * @see {@code constructHyperlinkBtn(String text, URI uri)}
+     */
     private JButton constructHyperlinkBtn(String text, String uri) {
         try {
             return constructHyperlinkBtn(text, new URI(uri));
