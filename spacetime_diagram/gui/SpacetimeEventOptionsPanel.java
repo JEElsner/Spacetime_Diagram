@@ -283,7 +283,7 @@ public class SpacetimeEventOptionsPanel extends JPanel {
      * 
      * @return The {@code SpacetimeEvent} represented by this panel
      */
-    public SpacetimeEvent getCurreEvent() {
+    public SpacetimeEvent getCurrentEvent() {
         return currentEvent;
     }
 
