@@ -18,11 +18,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package spacetime_diagram.gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -36,6 +37,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -43,6 +45,7 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
@@ -205,6 +208,19 @@ public class SpacetimeDiagramGUI extends JFrame {
             graph.setDrawLabels(labelsOnGraphCheckbox.getState());
         });
         optionsMenu.add(labelsOnGraphCheckbox);
+
+        optionsMenu.addSeparator();
+
+        JMenuItem aboutBtn = new JMenuItem("About...");
+        aboutBtn.setToolTipText("About the program");
+        aboutBtn.addActionListener(evt -> {
+            JDialog dialog = new JDialog(this, "About", true);
+
+            dialog.add(new AboutPanel());
+            dialog.setSize(new Dimension(300, 300));
+            dialog.setVisible(true);
+        });
+        optionsMenu.add(aboutBtn);
 
         // #endregion menu_bar
 
