@@ -78,6 +78,11 @@ public class Diagram extends Canvas implements ComponentListener, ListDataListen
      */
     private boolean drawLightCone = false;
 
+    /**
+     * Whether to draw labels for each element on the graph
+     */
+    private boolean drawLabels = true;
+
     // How the lines are painted
     private Stroke lineStroke = new BasicStroke(3);
 
@@ -113,6 +118,26 @@ public class Diagram extends Canvas implements ComponentListener, ListDataListen
 
         // Detect when the canvas is resized, so we can rescale the drawings
         this.addComponentListener(this);
+    }
+
+    /**
+     * Whether or not the Diagram draws text labels for each element on the graph
+     * 
+     * @return {@code true} if labels are drawn for SpacetimeEvents and
+     *         SpacetimeTravellers, {@code false} otherwise
+     */
+    public boolean isDrawLabels() {
+        return drawLabels;
+    }
+
+    /**
+     * Sets whether labels are drawn on the graph.
+     * 
+     * @param drawLabels {@code true} to draw labels, {@code false} to hide labels
+     */
+    public void setDrawLabels(boolean drawLabels) {
+        this.drawLabels = drawLabels;
+        repaint();
     }
 
     /**
@@ -194,8 +219,10 @@ public class Diagram extends Canvas implements ComponentListener, ListDataListen
                 g2d.fillOval(x - radius, t - radius, radius * 2, radius * 2);
             }
 
-            g2d.setColor(Color.black);
-            g2d.drawString(obj.getName(), x + (int) (radius * 1.1), t + (int) (radius * 1.1));
+            if (drawLabels) {
+                g2d.setColor(Color.black);
+                g2d.drawString(obj.getName(), x + (int) (radius * 1.1), t + (int) (radius * 1.1));
+            }
         }
     }
 

@@ -185,11 +185,18 @@ public class SpacetimeDiagramGUI extends JFrame {
         optionsMenu.addSeparator();
 
         JCheckBoxMenuItem drawLightConeCheckbox = new JCheckBoxMenuItem("Draw light cone from origin", false);
-        drawLightConeCheckbox.setMnemonic('l');
+        drawLightConeCheckbox.setMnemonic('c');
         drawLightConeCheckbox.addActionListener(e -> {
             graph.setDrawLightCone(drawLightConeCheckbox.getState());
         });
         optionsMenu.add(drawLightConeCheckbox);
+
+        JCheckBoxMenuItem labelsOnGraphCheckbox = new JCheckBoxMenuItem("Labels elements on graph", true);
+        labelsOnGraphCheckbox.setMnemonic('l');
+        labelsOnGraphCheckbox.addActionListener(evt -> {
+            graph.setDrawLabels(labelsOnGraphCheckbox.getState());
+        });
+        optionsMenu.add(labelsOnGraphCheckbox);
 
         // #endregion menu_bar
 
