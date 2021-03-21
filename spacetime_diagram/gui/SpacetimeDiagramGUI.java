@@ -22,15 +22,18 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.net.URL;
 import java.util.Hashtable;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
@@ -95,6 +98,11 @@ public class SpacetimeDiagramGUI extends JFrame {
     public SpacetimeDiagramGUI() {
         // Call the super constructor and specify the window name
         super("Spacetime Diagram");
+
+        // Set logo for window
+        URL iconURL = getClass().getResource("/res/logo.png");
+        ImageIcon icon = new ImageIcon(iconURL);
+        this.setIconImage(icon.getImage());
 
         // Create the list where we store all of the spacetime objects
         objects = new SpacetimeEventListModel();
