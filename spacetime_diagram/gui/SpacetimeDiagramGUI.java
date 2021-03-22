@@ -26,6 +26,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileFilter;
 import java.net.URL;
 import java.util.Hashtable;
 
@@ -48,6 +49,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import spacetime_diagram.LorentzTransform;
 import spacetime_diagram.SpacetimeEvent;
@@ -133,12 +135,18 @@ public class SpacetimeDiagramGUI extends JFrame {
         // Code for saving an image
         exportGraphItem.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            fileChooser.setFileFilter(
+                    new FileNameExtensionFilter("Image Files (.png, .jpg, .jpeg)", ".png", ".jpg", ".jpeg"));
 
             int returnVal = fileChooser.showSaveDialog(this);
 
             // If the user selects a place to save the image
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File saveFile = fileChooser.getSelectedFile();
+
+                int index = saveFile.getName().lastIndexOf('.');
+                String ext = saveFile.getName().substring(index + 1);
 
                 BufferedImage img = new BufferedImage(graph.getWidth(), graph.getHeight(), BufferedImage.TYPE_INT_ARGB);
                 Graphics2D graphics = (Graphics2D) img.getGraphics();
@@ -150,9 +158,9 @@ public class SpacetimeDiagramGUI extends JFrame {
 
                 graph.paint(graphics);
                 try {
-                    ImageIO.write(img, "png", saveFile);
+                    ImageIO.write(img, ext, saveFile);
                 } catch (Exception ex) {
-                    // TODO: handle exception
+                    ex.printStackTrace();
                 }
             }
         });
