@@ -300,13 +300,12 @@ public class SpacetimeEventOptionsPanel extends JPanel {
             updateValues();
         }
 
-        // Only show the beta field if a traveller that can have a speed is selected
+        // Only enable the beta field if a traveller that can have a speed is selected
         if (currentEvent instanceof SpacetimeTraveller) {
-            betaLabel.setVisible(true);
-            betaField.setVisible(true);
+            betaField.setEnabled(true);
         } else {
-            betaLabel.setVisible(false);
-            betaField.setVisible(false);
+            betaField.setText("");
+            betaField.setEnabled(false);
         }
     }
 
