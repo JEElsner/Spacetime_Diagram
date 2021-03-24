@@ -87,7 +87,10 @@ public class Diagram extends Canvas implements ComponentListener, ListDataListen
     private Stroke lineStroke = new BasicStroke(3);
 
     // Worldline colors
-    private Color[] lineColors = new Color[] { Color.red, Color.blue, Color.green };
+    // Color pallete is chosen to be accessible for colorblind people
+    // https://davidmathlogic.com/colorblind/#%23332288-%23117733-%2344AA99-%2388CCEE-%23DDCC77-%23CC6677-%23AA4499-%23882255
+    private Color[] lineColors = new Color[] { new Color(0x332288), new Color(0x117733), new Color(0x44AA99),
+            new Color(0x88CCEE), new Color(0xDDCC77), new Color(0xCC6677), new Color(0xAA4499), new Color(0x882255) };
 
     // How fast the reference frame for the graph is moving
     private double referenceFrameBeta = 0.0;
