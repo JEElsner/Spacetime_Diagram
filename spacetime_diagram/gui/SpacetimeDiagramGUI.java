@@ -26,8 +26,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileFilter;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Hashtable;
 
 import javax.imageio.ImageIO;
@@ -51,6 +51,7 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import spacetime_diagram.EventIO;
 import spacetime_diagram.LorentzTransform;
 import spacetime_diagram.SpacetimeEvent;
 import spacetime_diagram.SpacetimeTraveller;
@@ -128,6 +129,50 @@ public class SpacetimeDiagramGUI extends JFrame {
         fileMenu.setMnemonic('F');
         menuBar.add(fileMenu);
 
+        JMenuItem saveDiagramItem = new JMenuItem("Save Diagram");
+        saveDiagramItem.setToolTipText("Save diagram to edit later");
+        saveDiagramItem.setMnemonic('s');
+        fileMenu.add(saveDiagramItem);
+        saveDiagramItem.addActionListener(evt -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Spacetime Diagram File", "diagram"));
+
+            int returnVal = fileChooser.showSaveDialog(this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File saveFile = fileChooser.getSelectedFile();
+
+                if (!saveFile.getName().endsWith(".diagram")) {
+                    saveFile = new File(saveFile.getParentFile(), saveFile.getName() + ".diagram");
+                }
+
+                EventIO.saveSpacetimeEvents(saveFile, objects);
+            }
+        });
+
+        JMenuItem openDiagramItem = new JMenuItem("Open Diagram");
+        openDiagramItem.setToolTipText("Open diagram to continue editing");
+        openDiagramItem.setMnemonic('o');
+        fileMenu.add(openDiagramItem);
+        openDiagramItem.addActionListener(evt -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Spacetime Diagram File", "diagram"));
+
+            int returnVal = fileChooser.showOpenDialog(this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File openFile = fileChooser.getSelectedFile();
+
+                Collection<SpacetimeEvent> events = EventIO.readSpacetimeEvents(openFile);
+                objects.clear();
+                objects.addAll(events);
+            }
+        });
+
+        fileMenu.addSeparator();
+
         JMenuItem exportGraphItem = new JMenuItem("Export Graph as Image");
         exportGraphItem.setMnemonic('E');
         fileMenu.add(exportGraphItem);
@@ -137,7 +182,7 @@ public class SpacetimeDiagramGUI extends JFrame {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setAcceptAllFileFilterUsed(false);
             fileChooser.setFileFilter(
-                    new FileNameExtensionFilter("Image Files (.png, .jpg, .jpeg)", ".png", ".jpg", ".jpeg"));
+                    new FileNameExtensionFilter("Image Files (.png, .jpg, .jpeg)", "png", "jpg", "jpeg"));
 
             int returnVal = fileChooser.showSaveDialog(this);
 

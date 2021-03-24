@@ -23,6 +23,11 @@ package spacetime_diagram;
  * @author Jonathan Elsner
  */
 public class SpacetimeTraveller extends SpacetimeEvent {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     private double beta;
 
     /**

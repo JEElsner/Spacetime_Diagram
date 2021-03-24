@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package spacetime_diagram;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -24,7 +25,12 @@ import java.util.UUID;
  * 
  * @author Jonathan Elsner
  */
-public class SpacetimeEvent {
+public class SpacetimeEvent implements Serializable {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
     private UUID uuid;
 
