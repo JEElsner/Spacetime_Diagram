@@ -291,6 +291,7 @@ public class SpacetimeDiagramGUI extends JFrame {
         globalOptions.setBorder(BorderFactory.createTitledBorder("Reference Frame Speed"));
 
         GridBagConstraints globalOpsGBC = new GridBagConstraints();
+        globalOpsGBC.anchor = GridBagConstraints.PAGE_START;
         globalOpsGBC.gridx = globalOpsGBC.gridy = 0;
         globalOpsGBC.weightx = 0.2;
         globalOpsGBC.fill = GridBagConstraints.HORIZONTAL;
