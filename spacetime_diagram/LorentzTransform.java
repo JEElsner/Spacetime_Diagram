@@ -160,7 +160,7 @@ public class LorentzTransform {
      * @return the Lorentz Factor
      */
     public static double lorentz_factor(double beta) {
-        return 1 / Math.sqrt(1 + Math.pow(beta, 2));
+        return 1 / Math.sqrt(1 - Math.pow(beta, 2));
     }
 
     /**
