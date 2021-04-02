@@ -125,34 +125,6 @@ public class LorentzTransform {
     }
 
     /**
-     * Computes the t-coordinate in the rest frame from the t-coordinate in a moving
-     * reference frame
-     * 
-     * @param beta  the speed of the moving reference frame according to the rest
-     *              frame as a fraction of the speed of light
-     * @param restX the x-coordinate in the rest reference frame
-     * @param t     the t-coordinate in the moving reference frame
-     * @return the t-coordinate in the rest frame
-     */
-    public static double restT(double beta, double restX, double t) {
-        return (c * t / lorentz_factor(beta) + beta * restX) / c;
-    }
-
-    /**
-     * Computes the x-coordinate in the rest frame from the x-coordinate in a moving
-     * reference frame
-     * 
-     * @param beta  the speed of the moving reference frame according to the rest
-     *              frame as a fraction of the speed of light
-     * @param x     the x-coordinate in the moving reference frame
-     * @param restT the t-coordinate in the rest reference frame
-     * @return the x-coordinate in the rest frame
-     */
-    public static double restX(double beta, double x, double restT) {
-        return (x / lorentz_factor(beta) + beta * c * restT);
-    }
-
-    /**
      * Computes the Lorentz Factor (gamma) used in other calculations
      * {@link https://en.wikipedia.org/wiki/Lorentz_factor}
      * 
@@ -190,6 +162,8 @@ public class LorentzTransform {
      *         rest frame.
      */
     public static double getRestBeta(double observerBeta, double observedBeta) {
+        // This could probably be removed and all references to it replaced with a call
+        // to speedTransform() above, but at the moment, I'm afraid to touch it
         return (observerBeta + observedBeta) / (1 + observerBeta * observedBeta);
     }
 }
