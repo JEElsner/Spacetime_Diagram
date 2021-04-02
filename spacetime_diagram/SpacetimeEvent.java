@@ -91,8 +91,10 @@ public class SpacetimeEvent implements Serializable {
      * @param observedT    the new t-coordinate of this event
      */
     public void setT(double observerBeta, double observedT) {
-        this.x = LorentzTransform.xTransform(-observerBeta, getX(observerBeta), observedT);
-        this.t = LorentzTransform.tTransform(-observerBeta, getX(observerBeta), observedT);
+        double currentX = getX(observerBeta);
+
+        this.x = LorentzTransform.xTransform(-observerBeta, currentX, observedT);
+        this.t = LorentzTransform.tTransform(-observerBeta, currentX, observedT);
     }
 
     /**
@@ -115,8 +117,10 @@ public class SpacetimeEvent implements Serializable {
      * @param observedX    the new x-coordinate of this event
      */
     public void setX(double observerBeta, double observedX) {
-        this.x = LorentzTransform.xTransform(-observerBeta, observedX, getT(observerBeta));
-        this.t = LorentzTransform.tTransform(-observerBeta, observedX, getT(observerBeta));
+        double currentT = getT(observerBeta);
+
+        this.x = LorentzTransform.xTransform(-observerBeta, observedX, currentT);
+        this.t = LorentzTransform.tTransform(-observerBeta, observedX, currentT);
     }
 
     /**
