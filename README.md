@@ -3,6 +3,9 @@
 
 ![Example Spacetime grpah](doc/demo.png)
 
+## Downlad / Install
+Go to [releases](https://github.com/JEElsner/Spacetime_Diagram/releases/) and download the latest version. Select `Spacetime_Diagram_vX.X.X.zip`. Once downloaded, unzip or extract the contents and run `SpacetimeDiagram.jar`.
+
 ## Use
 The diagram window has four basic parts:
 * The spacetime diagram itself on the right
